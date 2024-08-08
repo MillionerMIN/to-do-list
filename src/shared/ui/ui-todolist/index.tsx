@@ -13,14 +13,19 @@ export function UiTodolist({ title, tasks, date }: UiTodolistProps) {
         <input />
         <button>+</button>
       </div>
-      <ul>
-        {tasks.map((task) => (
-          <li key={task.id}>
-            <input type='checkbox' checked={task.isDone} />{' '}
-            <span>{task.title}</span>
-          </li>
-        ))}
-      </ul>
+      {tasks.length === 0 ? (
+        <p>No tasks</p>
+      ) : (
+        <ul>
+          {tasks.map((task) => (
+            <li key={task.id}>
+              <input type='checkbox' checked={task.isDone} />{' '}
+              <span>{task.title}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+
       <div>
         <button>All</button>
         <button>Active</button>
