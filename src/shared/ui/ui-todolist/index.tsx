@@ -1,7 +1,11 @@
+import { Task } from '../../model';
+
 type UiTodolistProps = {
   title: string;
+  tasks: Task[];
+  date?: string;
 };
-export function UiTodolist({ title }: UiTodolistProps) {
+export function UiTodolist({ title, tasks, date }: UiTodolistProps) {
   return (
     <div>
       <h3>{title}</h3>
@@ -10,21 +14,19 @@ export function UiTodolist({ title }: UiTodolistProps) {
         <button>+</button>
       </div>
       <ul>
-        <li>
-          <input type='checkbox' checked={true} /> <span>HTML&CSS</span>
-        </li>
-        <li>
-          <input type='checkbox' checked={true} /> <span>JS</span>
-        </li>
-        <li>
-          <input type='checkbox' checked={false} /> <span>React</span>
-        </li>
+        {tasks.map((task) => (
+          <li key={task.id}>
+            <input type='checkbox' checked={task.isDone} />{' '}
+            <span>{task.title}</span>
+          </li>
+        ))}
       </ul>
       <div>
         <button>All</button>
         <button>Active</button>
         <button>Completed</button>
       </div>
+      <div>{date}</div>
     </div>
   );
 }
