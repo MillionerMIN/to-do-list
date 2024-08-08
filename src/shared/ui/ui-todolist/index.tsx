@@ -1,4 +1,5 @@
 import { Task } from '../../model';
+import { UiButton } from '../ui-button';
 
 type UiTodolistProps = {
   title: string;
@@ -11,7 +12,7 @@ export function UiTodolist({ title, tasks, date }: UiTodolistProps) {
       <h3>{title}</h3>
       <div>
         <input />
-        <button>+</button>
+        <UiButton title='+' />
       </div>
       {tasks.length === 0 ? (
         <p>No tasks</p>
@@ -27,9 +28,9 @@ export function UiTodolist({ title, tasks, date }: UiTodolistProps) {
       )}
 
       <div>
-        <button>All</button>
-        <button>Active</button>
-        <button>Completed</button>
+        <UiButton title='All' />
+        <UiButton title='Active' />
+        <UiButton title='Completed' />
       </div>
       <div>{date}</div>
     </div>
