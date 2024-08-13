@@ -1,3 +1,5 @@
+import './styles.css';
+
 import { ButtonHTMLAttributes } from 'react';
 
 type UiButtonProps = {

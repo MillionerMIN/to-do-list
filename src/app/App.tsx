@@ -47,6 +47,13 @@ function App() {
     setFilter(filter);
   };
 
+  const changeTaskStatus = (taskId: string, taskStatus: boolean) => {
+    const task = tasks.map((task) =>
+      task.id === taskId ? { ...task, isDone: taskStatus } : task
+    );
+    setTasks(task);
+  };
+
   console.log('$c Render');
 
   return (
@@ -55,7 +62,9 @@ function App() {
         title='What to learn'
         tasks={tasksForTodolist}
         date='08.08.2022'
+        filter={filter}
         addTask={addTask}
+        changeTaskStatus={changeTaskStatus}
         removeTask={removeTask}
         changeFilter={changeFilter}
       />
