@@ -19,6 +19,7 @@ type UiTodolistProps = {
   ) => void;
   removeTask: (taskId: string, todolistId: string) => void;
   changeFilter: (todolistId: string, filter: FilterValues) => void;
+  removeTodolist: (todolistId: string) => void;
 };
 export function UiTodolist({
   todolistId,
@@ -30,9 +31,14 @@ export function UiTodolist({
   changeTaskStatus,
   removeTask,
   changeFilter,
+  removeTodolist,
 }: UiTodolistProps) {
   const [taskTitle, setTaskTitle] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
+  function removeTodolistHandler() {
+    removeTodolist(todolistId);
+  }
+
   function addTaskHandler() {
     if (taskTitle.trim() !== '') {
       addTask(taskTitle.trim(), todolistId);
@@ -58,7 +64,7 @@ export function UiTodolist({
   return (
     <div>
       <h3>{title}</h3>
-      <div>
+      <div className='todolist-title-container'>
         <input
           className={error ? 'error' : ''}
           value={taskTitle}
@@ -66,6 +72,7 @@ export function UiTodolist({
           onKeyUp={addTaskOnKeyUpHandler}
         />
         <UiButton title='+' onClick={addTaskHandler} />
+        <UiButton title='x' onClick={removeTodolistHandler} />
       </div>
       {error && <p className='error-message'>{error}</p>}
       {tasks.length === 0 ? (
