@@ -11,9 +11,13 @@ type UiTodolistProps = {
   tasks: Task[];
   date?: string;
   filter: FilterValues;
-  addTask: (title: string) => void;
-  changeTaskStatus: (taskId: string, taskStatus: boolean) => void;
-  removeTask: (taskId: string) => void;
+  addTask: (title: string, todolistId: string) => void;
+  changeTaskStatus: (
+    taskId: string,
+    taskStatus: boolean,
+    todolistId: string
+  ) => void;
+  removeTask: (taskId: string, todolistId: string) => void;
   changeFilter: (todolistId: string, filter: FilterValues) => void;
 };
 export function UiTodolist({
@@ -31,7 +35,7 @@ export function UiTodolist({
   const [error, setError] = useState<string | null>(null);
   function addTaskHandler() {
     if (taskTitle.trim() !== '') {
-      addTask(taskTitle.trim());
+      addTask(taskTitle.trim(), todolistId);
       setTaskTitle('');
     } else {
       setError('title is required');
@@ -70,14 +74,14 @@ export function UiTodolist({
         <ul>
           {tasks.map((task) => {
             function removeTaskHandler() {
-              removeTask(task.id);
+              removeTask(task.id, todolistId);
             }
 
             function changeTaskStatusHandler(
               event: ChangeEvent<HTMLInputElement>
             ) {
               const newStatusValue = event.currentTarget.checked;
-              changeTaskStatus(task.id, newStatusValue);
+              changeTaskStatus(task.id, newStatusValue, todolistId);
             }
 
             return (
