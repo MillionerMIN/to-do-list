@@ -6,6 +6,7 @@ import type { FilterValues, Task } from '../../types';
 import { UiButton } from '../ui-button';
 
 type UiTodolistProps = {
+  todolistId: string;
   title: string;
   tasks: Task[];
   date?: string;
@@ -13,9 +14,10 @@ type UiTodolistProps = {
   addTask: (title: string) => void;
   changeTaskStatus: (taskId: string, taskStatus: boolean) => void;
   removeTask: (taskId: string) => void;
-  changeFilter: (filter: FilterValues) => void;
+  changeFilter: (todolistId: string, filter: FilterValues) => void;
 };
 export function UiTodolist({
+  todolistId,
   title,
   tasks,
   date,
@@ -46,7 +48,7 @@ export function UiTodolist({
   }
 
   function changeFilterHandler(filter: FilterValues) {
-    changeFilter(filter);
+    changeFilter(todolistId, filter);
   }
 
   return (
