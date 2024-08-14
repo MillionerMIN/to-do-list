@@ -1,6 +1,6 @@
 import './styles/App.css';
 
-import type { FilterValues, TodolistType } from '../shared';
+import type { FilterValues, TaskStateType, TodolistType } from '../shared';
 
 import { UiTodolist } from '../shared';
 import { useState } from 'react';
@@ -18,7 +18,7 @@ function App() {
     },
     { id: todolistID2, title: 'What to buy', filter: 'all' },
   ]);
-  const [tasks, setTasks] = useState({
+  const [tasks, setTasks] = useState<TaskStateType>({
     [todolistID1]: [
       { id: v1(), title: 'Redux', isDone: false },
       { id: v1(), title: 'Typescript', isDone: false },
