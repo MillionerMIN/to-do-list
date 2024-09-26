@@ -3,6 +3,7 @@ import './styles.css';
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import type { FilterValues, Task } from '../../types';
 
+import { UiAddItemForm } from '../ui-add-item-form';
 import { UiButton } from '../ui-button';
 
 type UiTodolistProps = {
@@ -61,9 +62,14 @@ export function UiTodolist({
     changeFilter(todolistId, filter);
   }
 
+  function addTaskCallback(title: string) {
+    addTask(title, todolistId);
+  }
+
   return (
     <div>
-      <h3>{title}</h3>
+      <h3>{title}</h3> <UiButton title='x' onClick={removeTodolistHandler} />
+      <UiAddItemForm addTask={addTaskCallback} />
       <div className='todolist-title-container'>
         <input
           className={error ? 'error' : ''}
@@ -72,7 +78,6 @@ export function UiTodolist({
           onKeyUp={addTaskOnKeyUpHandler}
         />
         <UiButton title='+' onClick={addTaskHandler} />
-        <UiButton title='x' onClick={removeTodolistHandler} />
       </div>
       {error && <p className='error-message'>{error}</p>}
       {tasks.length === 0 ? (
@@ -105,7 +110,6 @@ export function UiTodolist({
           })}
         </ul>
       )}
-
       <div>
         <UiButton
           className={filter === 'all' ? 'filter-active' : ''}
