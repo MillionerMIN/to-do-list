@@ -7,29 +7,29 @@ import { UiField } from '../ui-field';
 import { useState } from 'react';
 
 type UiAddItemFormProps = {
-  addTask: (title: string) => void;
+  addItem: (title: string) => void;
 };
 
-export function UiAddItemForm({ addTask }: UiAddItemFormProps) {
+export function UiAddItemForm({ addItem }: UiAddItemFormProps) {
   const [taskTitle, setTaskTitle] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
 
-  function addTaskHandler() {
+  function addItemHandler() {
     if (taskTitle.trim() !== '') {
-      addTask(taskTitle.trim());
+      addItem(taskTitle.trim());
       setTaskTitle('');
     } else {
       setError('title is required');
     }
   }
 
-  function changeTaskTitleHandler(event: ChangeEvent<HTMLInputElement>) {
+  function changeItemTitleHandler(event: ChangeEvent<HTMLInputElement>) {
     setTaskTitle(event.currentTarget.value);
   }
 
-  function addTaskOnKeyUpHandler(event: KeyboardEvent<HTMLInputElement>) {
+  function addItemOnKeyUpHandler(event: KeyboardEvent<HTMLInputElement>) {
     setError(null);
-    event.key === 'Enter' && addTaskHandler();
+    event.key === 'Enter' && addItemHandler();
   }
 
   return (
@@ -37,11 +37,11 @@ export function UiAddItemForm({ addTask }: UiAddItemFormProps) {
       <UiField
         className={error ? 'error' : ''}
         value={taskTitle}
-        onChange={changeTaskTitleHandler}
-        onKeyUp={addTaskOnKeyUpHandler}
+        onChange={changeItemTitleHandler}
+        onKeyUp={addItemOnKeyUpHandler}
       />
-      <UiButton title='+' onClick={addTaskHandler} />
-      {/* <UiButton title='x' onClick={removeTodolistHandler} /> */}
+      <UiButton title='+' onClick={addItemHandler} />
+      {error && <div className='error-message'>{error}</div>}
     </div>
   );
 }

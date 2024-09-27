@@ -1,10 +1,11 @@
 import './styles.css';
 
-import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import type { FilterValues, Task } from '../../types';
 
+import { ChangeEvent } from 'react';
 import { UiAddItemForm } from '../ui-add-item-form';
 import { UiButton } from '../ui-button';
+import { UiEditableSpan } from '../ui-editable-span';
 
 type UiTodolistProps = {
   todolistId: string;
@@ -21,6 +22,8 @@ type UiTodolistProps = {
   removeTask: (taskId: string, todolistId: string) => void;
   changeFilter: (todolistId: string, filter: FilterValues) => void;
   removeTodolist: (todolistId: string) => void;
+  updateTask: (taskId: string, title: string, todolistId: string) => void;
+  updateTodolist: (todolistId: string, title: string) => void;
 };
 export function UiTodolist({
   todolistId,
@@ -33,53 +36,32 @@ export function UiTodolist({
   removeTask,
   changeFilter,
   removeTodolist,
+  updateTask,
+  updateTodolist,
 }: UiTodolistProps) {
-  const [taskTitle, setTaskTitle] = useState<string>('');
-  const [error, setError] = useState<string | null>(null);
   function removeTodolistHandler() {
     removeTodolist(todolistId);
-  }
-
-  function addTaskHandler() {
-    if (taskTitle.trim() !== '') {
-      addTask(taskTitle.trim(), todolistId);
-      setTaskTitle('');
-    } else {
-      setError('title is required');
-    }
-  }
-
-  function changeTaskTitleHandler(event: ChangeEvent<HTMLInputElement>) {
-    setTaskTitle(event.currentTarget.value);
-  }
-
-  function addTaskOnKeyUpHandler(event: KeyboardEvent<HTMLInputElement>) {
-    setError(null);
-    event.key === 'Enter' && addTaskHandler();
   }
 
   function changeFilterHandler(filter: FilterValues) {
     changeFilter(todolistId, filter);
   }
 
-  function addTaskCallback(title: string) {
+  function addItemCallback(title: string) {
     addTask(title, todolistId);
+  }
+
+  function updateTodolistTitleHandler(title: string) {
+    updateTodolist(todolistId, title);
   }
 
   return (
     <div>
-      <h3>{title}</h3> <UiButton title='x' onClick={removeTodolistHandler} />
-      <UiAddItemForm addTask={addTaskCallback} />
-      <div className='todolist-title-container'>
-        <input
-          className={error ? 'error' : ''}
-          value={taskTitle}
-          onChange={changeTaskTitleHandler}
-          onKeyUp={addTaskOnKeyUpHandler}
-        />
-        <UiButton title='+' onClick={addTaskHandler} />
-      </div>
-      {error && <p className='error-message'>{error}</p>}
+      <h3>
+        <UiEditableSpan value={title} onChange={updateTodolistTitleHandler} />
+      </h3>
+      <UiButton title='x' onClick={removeTodolistHandler} />
+      <UiAddItemForm addItem={addItemCallback} />
       {tasks.length === 0 ? (
         <p>No tasks</p>
       ) : (
@@ -96,14 +78,21 @@ export function UiTodolist({
               changeTaskStatus(task.id, newStatusValue, todolistId);
             }
 
+            function changeTaskTitleHandler(title: string) {
+              updateTask(task.id, title, todolistId);
+            }
+
             return (
               <li key={task.id} className={task.isDone ? 'is-done' : ''}>
                 <input
                   type='checkbox'
                   checked={task.isDone}
                   onChange={changeTaskStatusHandler}
-                />{' '}
-                <span>{task.title}</span>
+                />
+                <UiEditableSpan
+                  value={task.title}
+                  onChange={changeTaskTitleHandler}
+                />
                 <UiButton title='X' onClick={removeTaskHandler} />
               </li>
             );

@@ -1,8 +1,8 @@
 import './styles/App.css';
 
 import type { FilterValues, TaskStateType, TodolistType } from '../shared';
+import { UiAddItemForm, UiTodolist } from '../shared';
 
-import { UiTodolist } from '../shared';
 import { useState } from 'react';
 import { v1 } from 'uuid';
 
@@ -30,7 +30,18 @@ function App() {
     ],
   });
 
-  const addTask = (title: string, todolistId: string) => {
+  function addTodolist(title: string) {
+    const todolistID = v1();
+    const newTodolist: TodolistType = {
+      id: todolistID,
+      title,
+      filter: 'all',
+    };
+    setTodolists([newTodolist, ...todolists]);
+    setTasks({ ...tasks, [todolistID]: [] });
+  }
+
+  const addItem = (title: string, todolistId: string) => {
     const newTask = {
       id: v1(),
       title,
@@ -79,10 +90,29 @@ function App() {
     setTasks({ ...tasks });
   };
 
+  const updateTask = (taskId: string, title: string, todolistId: string) => {
+    const newTodolistTasks = {
+      ...tasks,
+      [todolistId]: tasks[todolistId].map((t) =>
+        t.id === taskId ? { ...t, title } : t
+      ),
+    };
+
+    setTasks(newTodolistTasks);
+  };
+
+  const updateTodolistTitle = (todolistId: string, title: string) => {
+    const newTodolistTitle = todolists.map((tl) =>
+      tl.id === todolistId ? { ...tl, title } : tl
+    );
+    setTodolists(newTodolistTitle);
+  };
+
   console.log('$c Render');
 
   return (
     <div className='App'>
+      <UiAddItemForm addItem={addTodolist} />
       {todolists.map((tl) => {
         const { title, filter, id } = tl;
 
@@ -104,11 +134,13 @@ function App() {
             tasks={tasksForTodolist}
             date='08.08.2022'
             filter={filter}
-            addTask={addTask}
+            addTask={addItem}
             changeTaskStatus={changeTaskStatus}
             removeTask={removeTask}
             changeFilter={changeFilter}
             removeTodolist={removeTodolist}
+            updateTask={updateTask}
+            updateTodolist={updateTodolistTitle}
           />
         );
       })}
