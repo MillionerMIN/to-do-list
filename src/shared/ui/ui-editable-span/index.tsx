@@ -6,7 +6,7 @@ type PropsType = {
   value: string;
   onChange: (newTitle: string) => void;
 };
-export function UiEditableSpan({ value, onChange }: PropsType) {
+const UiEditableSpan = ({ value, onChange }: PropsType) => {
   const [editMode, setEditMode] = useState(false);
   const [title, setTitle] = useState(value);
 
@@ -37,4 +37,6 @@ export function UiEditableSpan({ value, onChange }: PropsType) {
       )}
     </>
   );
-}
+};
+
+export { UiEditableSpan };
