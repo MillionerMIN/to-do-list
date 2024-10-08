@@ -1,11 +1,14 @@
-import './styles.css';
-
+import { Card, CardActions, CardContent, List, ListItem } from '@mui/material';
 import type { FilterValues, Task } from '../../types';
 
 import { ChangeEvent } from 'react';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { UiAddItemForm } from '../ui-add-item-form';
 import { UiButton } from '../ui-button';
-import { UiEditableSpan } from '../ui-editable-span';
+import { UiCheckbox } from '../ui-checkbox';
+import { UiEditableSpan } from '../ui-editable-span/ui-editable-span';
+import { UiIconButton } from '../ui-icon-button';
+import clsx from 'clsx';
 
 type UiTodolistProps = {
   todolistId: string;
@@ -56,67 +59,101 @@ export function UiTodolist({
   }
 
   return (
-    <div>
-      <h3>
-        <UiEditableSpan value={title} onChange={updateTodolistTitleHandler} />
-      </h3>
-      <UiButton title='x' onClick={removeTodolistHandler} />
-      <UiAddItemForm addItem={addItemCallback} />
-      {tasks.length === 0 ? (
-        <p>No tasks</p>
-      ) : (
-        <ul>
-          {tasks.map((task) => {
-            function removeTaskHandler() {
-              removeTask(task.id, todolistId);
+    <Card>
+      <CardContent>
+        <div className='flex justify-between'>
+          <h3 className='text-lg font-semibold'>
+            <UiEditableSpan
+              value={title}
+              onChange={updateTodolistTitleHandler}
+            />
+          </h3>
+          <UiIconButton
+            className=' hover:text-pink'
+            children={
+              <DeleteIcon
+                fontSize='small'
+                className='text-bg-dark/50 hover:text-pink'
+              />
             }
+            onClick={removeTodolistHandler}
+          />
+        </div>
 
-            function changeTaskStatusHandler(
-              event: ChangeEvent<HTMLInputElement>
-            ) {
-              const newStatusValue = event.currentTarget.checked;
-              changeTaskStatus(task.id, newStatusValue, todolistId);
-            }
+        <UiAddItemForm addItem={addItemCallback} />
+        {tasks.length === 0 ? (
+          <p>No tasks</p>
+        ) : (
+          <List>
+            {tasks.map((task) => {
+              function removeTaskHandler() {
+                removeTask(task.id, todolistId);
+              }
 
-            function changeTaskTitleHandler(title: string) {
-              updateTask(task.id, title, todolistId);
-            }
+              function changeTaskStatusHandler(
+                event: ChangeEvent<HTMLInputElement>
+              ) {
+                const newStatusValue = event.currentTarget.checked;
+                changeTaskStatus(task.id, newStatusValue, todolistId);
+              }
 
-            return (
-              <li key={task.id} className={task.isDone ? 'is-done' : ''}>
-                <input
-                  type='checkbox'
-                  checked={task.isDone}
-                  onChange={changeTaskStatusHandler}
-                />
-                <UiEditableSpan
-                  value={task.title}
-                  onChange={changeTaskTitleHandler}
-                />
-                <UiButton title='X' onClick={removeTaskHandler} />
-              </li>
-            );
-          })}
-        </ul>
-      )}
-      <div>
+              function changeTaskTitleHandler(title: string) {
+                updateTask(task.id, title, todolistId);
+              }
+
+              return (
+                <ListItem
+                  key={task.id}
+                  disablePadding
+                  disableGutters
+                  className={clsx(
+                    'justify-between',
+                    task.isDone && 'opacity-30'
+                  )}
+                >
+                  <div className='flex gap-2'>
+                    <UiCheckbox
+                      checked={task.isDone}
+                      onChange={changeTaskStatusHandler}
+                    />
+                    <UiEditableSpan
+                      value={task.title}
+                      onChange={changeTaskTitleHandler}
+                    />
+                  </div>
+
+                  <UiIconButton
+                    className='hover:text-pink text-bg-dark/50'
+                    onClick={removeTaskHandler}
+                    children={<DeleteIcon fontSize='small' />}
+                  />
+                </ListItem>
+              );
+            })}
+          </List>
+        )}
+      </CardContent>
+      <CardActions>
         <UiButton
-          className={filter === 'all' ? 'filter-active' : ''}
-          title='All'
+          variant={filter === 'all' ? 'outlined' : 'text'}
+          color='inherit'
+          children='All'
           onClick={() => changeFilterHandler('all')}
         />
         <UiButton
-          className={filter === 'active' ? 'filter-active' : ''}
-          title='Active'
+          variant={filter === 'active' ? 'outlined' : 'text'}
+          color='primary'
+          children='Active'
           onClick={() => changeFilterHandler('active')}
         />
         <UiButton
-          className={filter === 'completed' ? 'filter-active' : ''}
-          title='Completed'
+          variant={filter === 'completed' ? 'outlined' : 'text'}
+          color='secondary'
+          children='Completed'
           onClick={() => changeFilterHandler('completed')}
         />
-      </div>
+      </CardActions>
       <div>{date}</div>
-    </div>
+    </Card>
   );
 }

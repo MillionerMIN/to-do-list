@@ -1,8 +1,10 @@
-import './styles/App.css';
-
 import type { FilterValues, TaskStateType, TodolistType } from '../shared';
-import { UiAddItemForm, UiTodolist } from '../shared';
+import { UiAddItemForm, UiAppBar, UiTodolist } from '../shared';
 
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid2';
+import Paper from '@mui/material/Paper';
+import { WithTheme } from './providers';
 import { useState } from 'react';
 import { v1 } from 'uuid';
 
@@ -111,40 +113,52 @@ function App() {
   console.log('$c Render');
 
   return (
-    <div className='App'>
-      <UiAddItemForm addItem={addTodolist} />
-      {todolists.map((tl) => {
-        const { title, filter, id } = tl;
+    <WithTheme>
+      <UiAppBar />
+      <Container className='grid gap-6'>
+        <Grid container>
+          <UiAddItemForm addItem={addTodolist} />
+        </Grid>
 
-        let tasksForTodolist = tasks[tl.id];
+        <Grid container spacing={2}>
+          {todolists.map((tl) => {
+            const { title, filter, id } = tl;
 
-        if (filter === 'active') {
-          tasksForTodolist = tasks[tl.id].filter((task) => !task.isDone);
-        }
+            let tasksForTodolist = tasks[tl.id];
 
-        if (filter === 'completed') {
-          tasksForTodolist = tasks[tl.id].filter((task) => task.isDone);
-        }
+            if (filter === 'active') {
+              tasksForTodolist = tasks[tl.id].filter((task) => !task.isDone);
+            }
 
-        return (
-          <UiTodolist
-            key={id}
-            todolistId={id}
-            title={title}
-            tasks={tasksForTodolist}
-            date='08.08.2022'
-            filter={filter}
-            addTask={addItem}
-            changeTaskStatus={changeTaskStatus}
-            removeTask={removeTask}
-            changeFilter={changeFilter}
-            removeTodolist={removeTodolist}
-            updateTask={updateTask}
-            updateTodolist={updateTodolistTitle}
-          />
-        );
-      })}
-    </div>
+            if (filter === 'completed') {
+              tasksForTodolist = tasks[tl.id].filter((task) => task.isDone);
+            }
+
+            return (
+              <Grid key={tl.id}>
+                <Paper>
+                  <UiTodolist
+                    key={id}
+                    todolistId={id}
+                    title={title}
+                    tasks={tasksForTodolist}
+                    date='08.08.2022'
+                    filter={filter}
+                    addTask={addItem}
+                    changeTaskStatus={changeTaskStatus}
+                    removeTask={removeTask}
+                    changeFilter={changeFilter}
+                    removeTodolist={removeTodolist}
+                    updateTask={updateTask}
+                    updateTodolist={updateTodolistTitle}
+                  />
+                </Paper>
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Container>
+    </WithTheme>
   );
 }
 

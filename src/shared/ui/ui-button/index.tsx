@@ -1,11 +1,5 @@
-import './styles.css';
+import { Button } from '@mui/material';
 
-import { ButtonHTMLAttributes } from 'react';
-
-type UiButtonProps = {
-  title: string;
-} & ButtonHTMLAttributes<HTMLButtonElement>;
-
-export function UiButton({ title, ...props }: UiButtonProps) {
-  return <button {...props}>{title}</button>;
+export function UiButton({ ...props }) {
+  return <Button variant='contained' color='primary' {...props} />;
 }

@@ -1,9 +1,19 @@
-import type { InputHTMLAttributes } from 'react';
+import { forwardRef, memo } from 'react';
+
+import { TextField } from '@mui/material';
+import type { TextFieldProps } from '@mui/material';
 import { clsx } from 'clsx';
 
-type UiFieldProps = {} & InputHTMLAttributes<HTMLInputElement>;
-export function UiField({ className, ...props }: UiFieldProps) {
-  return (
-    <input className={clsx('border border-spacing-1', className)} {...props} />
-  );
-}
+type InputType = Omit<TextFieldProps, 'variant'>;
+// eslint-disable-next-line react/display-name
+export const UiField = memo(
+  forwardRef(({ className, ...props }: InputType, ref) => (
+    <TextField
+      className={clsx('', className)}
+      size='small'
+      fullWidth
+      {...props}
+      inputRef={ref}
+    />
+  ))
+);

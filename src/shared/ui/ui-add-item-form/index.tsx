@@ -1,9 +1,8 @@
-import './styles.css';
-
 import type { ChangeEvent, KeyboardEvent } from 'react';
 
-import { UiButton } from '../ui-button';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 import { UiField } from '../ui-field';
+import { UiIconButton } from '../ui-icon-button';
 import { useState } from 'react';
 
 type UiAddItemFormProps = {
@@ -33,15 +32,20 @@ export function UiAddItemForm({ addItem }: UiAddItemFormProps) {
   }
 
   return (
-    <div className='todolist-title-container'>
+    <div className='flex items-start gap-2'>
       <UiField
-        className={error ? 'error' : ''}
+        className={
+          error
+            ? 'outline-none outline-2 -outline-offset-2 outline-ping/25'
+            : ''
+        }
         value={taskTitle}
         onChange={changeItemTitleHandler}
         onKeyUp={addItemOnKeyUpHandler}
+        error={!!error}
+        helperText={error}
       />
-      <UiButton title='+' onClick={addItemHandler} />
-      {error && <div className='error-message'>{error}</div>}
+      <UiIconButton children={<AddBoxIcon />} onClick={addItemHandler} />
     </div>
   );
 }
