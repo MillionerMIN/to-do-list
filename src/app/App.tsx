@@ -1,4 +1,4 @@
-import type { FilterValues, TaskStateType, TodolistType } from '../shared';
+import type { FilterValuesType, TasksStateType, TodolistType } from '../shared';
 import { UiAddItemForm, UiAppBar, UiTodolist } from '../shared';
 
 import Container from '@mui/material/Container';
@@ -20,7 +20,7 @@ function App() {
     },
     { id: todolistID2, title: 'What to buy', filter: 'all' },
   ]);
-  const [tasks, setTasks] = useState<TaskStateType>({
+  const [tasks, setTasks] = useState<TasksStateType>({
     [todolistID1]: [
       { id: v1(), title: 'Redux', isDone: false },
       { id: v1(), title: 'Typescript', isDone: false },
@@ -64,7 +64,7 @@ function App() {
     setTasks(newTodolistTasks);
   };
 
-  const changeFilter = (todolistId: string, filter: FilterValues) => {
+  const changeFilter = (todolistId: string, filter: FilterValuesType) => {
     const todolist = todolists.map((tl) =>
       tl.id === todolistId ? { ...tl, filter } : tl
     );
