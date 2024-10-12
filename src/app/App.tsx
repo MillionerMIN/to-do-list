@@ -43,7 +43,7 @@ function App() {
     setTasks({ ...tasks, [todolistID]: [] });
   }
 
-  const addItem = (title: string, todolistId: string) => {
+  const addTask = (title: string, todolistId: string) => {
     const newTask = {
       id: v1(),
       title,
@@ -144,7 +144,7 @@ function App() {
                     tasks={tasksForTodolist}
                     date='08.08.2022'
                     filter={filter}
-                    addTask={addItem}
+                    addTask={addTask}
                     changeTaskStatus={changeTaskStatus}
                     removeTask={removeTask}
                     changeFilter={changeFilter}

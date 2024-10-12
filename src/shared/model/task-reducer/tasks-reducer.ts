@@ -1,3 +1,8 @@
+import type {
+  AddTodolistActionType,
+  RemoveTodolistActionType,
+} from '../todolist-reducer/todolists-reducer';
+
 import type { TasksStateType } from '../../types';
 import { v1 } from 'uuid';
 
@@ -11,10 +16,17 @@ export const tasksReducer = (
     case 'REMOVE-TASK': {
       return {
         ...state,
-        [action.payload.todolistID]: state[action.payload.todolistID].filter(
+        [action.payload.todolistId]: state[action.payload.todolistId].filter(
           (task) => task.id !== action.payload.taskId
         ),
       };
+    }
+    case 'REMOVE-TODOLIST': {
+      delete state[action.payload.todolistId];
+      return state;
+    }
+    case 'ADD-TODOLIST': {
+      return { ...state, [action.payload.todolistId]: [] };
     }
     case 'ADD-TASK': {
       const newTask = {
@@ -24,8 +36,8 @@ export const tasksReducer = (
       };
       return {
         ...state,
-        [action.payload.todolistID]: [
-          ...state[action.payload.todolistID],
+        [action.payload.todolistId]: [
+          ...state[action.payload.todolistId],
           newTask,
         ],
       };
@@ -61,12 +73,12 @@ export const tasksReducer = (
 
 export const removeTaskAC = (payload: {
   taskId: string;
-  todolistID: string;
+  todolistId: string;
 }) => {
   return { type: 'REMOVE-TASK', payload } as const;
 };
 
-export const addTaskAC = (payload: { title: string; todolistID: string }) => {
+export const addTaskAC = (payload: { title: string; todolistId: string }) => {
   return { type: 'ADD-TASK', payload } as const;
 };
 
@@ -101,4 +113,6 @@ type ActionsType =
   | RemoveTaskActionType
   | AddTaskActionType
   | ChangeTaskStatusActionType
-  | CardTaskTitleActionType;
+  | CardTaskTitleActionType
+  | AddTodolistActionType
+  | RemoveTodolistActionType;
