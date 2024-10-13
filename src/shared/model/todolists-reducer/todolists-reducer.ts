@@ -40,7 +40,7 @@ export const todolistsReducer = (
     }
     case 'CHANGE-TODOLIST-FILTER': {
       const newTodolists = state.map((tl) =>
-        tl.id === action.payload.id
+        tl.id === action.payload.todolistId
           ? { ...tl, filter: action.payload.filter }
           : tl
       );
@@ -76,7 +76,7 @@ export const changedTodolistFilterAC = (
 ) => {
   return {
     type: 'CHANGE-TODOLIST-FILTER',
-    payload: { id: todolistId, filter },
+    payload: { todolistId, filter },
   } as const;
 };
 

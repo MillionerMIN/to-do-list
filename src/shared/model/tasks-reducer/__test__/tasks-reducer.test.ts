@@ -8,7 +8,7 @@ import {
 import {
   addTodolistAC,
   removeTodolistAC,
-} from '../../todolist-reducer/todolists-reducer';
+} from '../../todolists-reducer/todolists-reducer';
 
 import { TasksStateType } from '../../../types';
 

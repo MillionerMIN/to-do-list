@@ -1,7 +1,7 @@
 import type {
   AddTodolistActionType,
   RemoveTodolistActionType,
-} from '../todolist-reducer/todolists-reducer';
+} from '../todolists-reducer/todolists-reducer';
 
 import type { TasksStateType } from '../../types';
 import { v1 } from 'uuid';
