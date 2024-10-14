@@ -1,1 +1,1 @@
-export * from './color-context';
+export { getTheme } from './get-theme';

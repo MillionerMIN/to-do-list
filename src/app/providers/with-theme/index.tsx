@@ -1,9 +1,7 @@
-import { ColorContext, darkTheme, lightTheme } from '../../../shared';
 import { CssBaseline, Box as MuiBox } from '@mui/material';
 import { ThemeProvider, styled } from '@mui/material/styles';
-import { useMemo, useState } from 'react';
 
-import { ThemeModeType } from '../../../shared';
+import { getTheme } from '../../../shared';
 
 type WithThemeType = {
   children: React.ReactNode;
@@ -15,28 +13,11 @@ const UiBox = styled(MuiBox)(({ theme }) => ({
 }));
 
 export function WithTheme({ children }: WithThemeType) {
-  const [mode, setMode] = useState<ThemeModeType>('light');
-
-  const theme = useMemo(() => {
-    return mode === 'light' ? lightTheme : darkTheme;
-  }, [mode]);
-
-  const colorMode = useMemo(
-    () => ({
-      toggleColorMode: () =>
-        setMode((prevMode: ThemeModeType) =>
-          prevMode === 'light' ? 'dark' : 'light'
-        ),
-    }),
-    []
-  );
-
+  const theme = getTheme();
   return (
-    <ColorContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline enableColorScheme />
-        <UiBox>{children}</UiBox>
-      </ThemeProvider>
-    </ColorContext.Provider>
+    <ThemeProvider theme={theme}>
+      <CssBaseline enableColorScheme />
+      <UiBox>{children}</UiBox>
+    </ThemeProvider>
   );
 }

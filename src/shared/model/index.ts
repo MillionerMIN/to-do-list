@@ -12,3 +12,5 @@ export {
   changeTaskTitleAC,
   tasksReducer,
 } from './tasks-reducer';
+
+export { appReducer, changeThemeModeAC } from './app-reducer';
