@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 
-import App from '../app';
+import { AppWithRedux as App } from '../App';
 import { render } from '@testing-library/react';
 
 test('demo', () => {

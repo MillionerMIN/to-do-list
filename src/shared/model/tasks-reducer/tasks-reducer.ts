@@ -67,7 +67,7 @@ export const tasksReducer = (
       };
     }
     default:
-      throw new Error("I don't understand this action type");
+      return state;
   }
 };
 
