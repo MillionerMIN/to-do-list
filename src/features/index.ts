@@ -1,1 +1,3 @@
-export * from './removeTask';
+export * from './switch-theme-mode';
+export * from './todolist';
+export * from './task';

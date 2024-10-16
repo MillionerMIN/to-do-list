@@ -1,6 +1,6 @@
 import { Provider } from 'react-redux';
 import { ReactNode } from 'react';
-import { store } from '../../../shared';
+import { store } from '../../store';
 
 type PropsType = {
   children: ReactNode;

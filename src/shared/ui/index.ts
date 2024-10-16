@@ -1,7 +1,20 @@
 import { UiAddItemForm } from './ui-add-item-form';
-import { UiAppBar } from './ui-app-bar';
+import { UiButton } from './ui-button';
+import { UiCheckbox } from './ui-checkbox';
+import { UiEditableSpan } from './ui-editable-span';
+import { UiIconButton } from './ui-icon-button';
 import { UiLogo } from './ui-logo';
-import { UiTodolist } from './ui-todolist';
 import { darkTheme } from './dark-theme';
 import { lightTheme } from './light-theme';
-export { UiTodolist, UiAddItemForm, UiAppBar, UiLogo, darkTheme, lightTheme };
+
+export {
+  UiAddItemForm,
+  UiLogo,
+  darkTheme,
+  lightTheme,
+  UiCheckbox,
+  UiEditableSpan,
+  UiIconButton,
+  UiButton,
+};
+export * from './ui-switch-mode-button';
