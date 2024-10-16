@@ -3,12 +3,12 @@ import { ChangeEvent, useState } from 'react';
 import { UiField } from '../ui-field';
 import clsx from 'clsx';
 
-type PropsType = {
+type Props = {
   className?: string;
   value: string;
   onChange: (newTitle: string) => void;
 };
-export const UiEditableSpan = ({ className, value, onChange }: PropsType) => {
+export const UiEditableSpan = ({ className, value, onChange }: Props) => {
   const [editMode, setEditMode] = useState(false);
   const [title, setTitle] = useState(value);
 

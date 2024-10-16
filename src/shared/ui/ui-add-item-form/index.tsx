@@ -5,11 +5,11 @@ import { UiField } from '../ui-field';
 import { UiIconButton } from '../ui-icon-button';
 import { useState } from 'react';
 
-type PropsType = {
+type Props = {
   addItem: (title: string) => void;
 };
 
-export function UiAddItemForm({ addItem }: PropsType) {
+export function UiAddItemForm({ addItem }: Props) {
   const [taskTitle, setTaskTitle] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
 
