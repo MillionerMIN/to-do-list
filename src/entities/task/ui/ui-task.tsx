@@ -1,10 +1,14 @@
 import {
-  TaskType,
   UiEditableSpan,
   useAppDispatch,
   useAppSelector,
 } from '../../../shared';
-import { changeTaskStatusAC, changeTaskTitleAC, removeTaskAC } from '../model';
+import {
+  changeTaskStatusAC,
+  changeTaskTitleAC,
+  removeTaskAC,
+  selectTaskByTaskId,
+} from '../model';
 
 import { ChangeEvent } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -18,9 +22,7 @@ type PropsType = {
   taskId: string;
 };
 export function UiTask({ todolistId, taskId }: PropsType) {
-  const task = useAppSelector(
-    (state) => state.tasks[todolistId].find((t) => t.id === taskId) as TaskType
-  );
+  const task = useAppSelector(selectTaskByTaskId(todolistId, taskId));
   const dispatch = useAppDispatch();
   function removeTaskHandler() {
     dispatch(removeTaskAC({ taskId, todolistId }));

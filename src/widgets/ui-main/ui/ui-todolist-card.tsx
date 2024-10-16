@@ -1,4 +1,3 @@
-import { TodolistType, useAppSelector } from '../../../shared';
 import {
   UiEditableTitleTodolist,
   UiFilterTasksButtons,
@@ -9,16 +8,15 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import { UiTasksList } from './ui-tasks-list';
+import { selectTodolistById } from '../../../entities';
+import { useAppSelector } from '../../../shared';
 
 type PropsType = {
   todolistId: string;
 };
 
 export function UiTodolistCard({ todolistId }: PropsType) {
-  const todolist = useAppSelector(
-    (state) =>
-      state.todolists.find((tl) => tl.id === todolistId) as TodolistType
-  );
+  const todolist = useAppSelector(selectTodolistById(todolistId));
   return (
     <Card>
       <CardContent>

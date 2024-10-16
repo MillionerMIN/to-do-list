@@ -1,12 +1,13 @@
 import {
   UiSwitchModeButton,
   changeThemeModeAC,
+  selectThemeMode,
   useAppDispatch,
   useAppSelector,
 } from '../../shared';
 
 export function SwitchThemeMode() {
-  const themeMode = useAppSelector((state) => state.app.themeMode);
+  const themeMode = useAppSelector(selectThemeMode);
   const dispatch = useAppDispatch();
   const changeModeHandler = () => {
     const theme = themeMode === 'light' ? 'dark' : 'light';

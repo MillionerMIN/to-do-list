@@ -5,3 +5,4 @@ export {
   changeTaskTitleAC,
 } from './actions';
 export { tasksReducer } from './tasks-reducer';
+export * from './tasks-selectors';

@@ -1,21 +1,19 @@
 import {
   FilterValuesType,
-  TodolistType,
   UiButton,
   useAppDispatch,
   useAppSelector,
 } from '../../../../shared';
-
-import { changedTodolistFilterAC } from '../../../../entities';
+import {
+  changedTodolistFilterAC,
+  selectFilterTodolistById,
+} from '../../../../entities';
 
 type PropsType = {
   todolistId: string;
 };
 export function UiFilterTasksButtons({ todolistId }: PropsType) {
-  const { filter } = useAppSelector(
-    (state) =>
-      state.todolists.find((tl) => tl.id === todolistId) as TodolistType
-  );
+  const { filter } = useAppSelector(selectFilterTodolistById(todolistId));
   const dispatch = useAppDispatch();
 
   const changeFilterHandler = (filter: FilterValuesType) => {

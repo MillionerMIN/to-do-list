@@ -1,1 +1,1 @@
-export { appReducer, changeThemeModeAC } from './app-reducer';
+export * from './app-reducer';

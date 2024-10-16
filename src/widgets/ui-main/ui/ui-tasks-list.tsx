@@ -3,21 +3,16 @@ import { useAppSelector, type FilterValuesType } from '../../../shared';
 import List from '@mui/material/List';
 
 import { UiAddTaskForm } from '../../../features';
-import { UiTask } from '../../../entities';
+import { selectFilterTasksByTodolistId, UiTask } from '../../../entities';
 
 type PropsType = {
   todolistId: string;
   filter: FilterValuesType;
 };
 export function UiTasksList({ todolistId, filter }: PropsType) {
-  const tasks = useAppSelector((state) => {
-    if (filter === 'active')
-      return state.tasks[todolistId].filter((task) => !task.isDone);
-
-    if (filter === 'completed')
-      return state.tasks[todolistId].filter((task) => task.isDone);
-    return state.tasks[todolistId];
-  });
+  const tasks = useAppSelector(
+    selectFilterTasksByTodolistId(todolistId, filter)
+  );
 
   return (
     <>
