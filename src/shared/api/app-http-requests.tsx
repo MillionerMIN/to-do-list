@@ -4,6 +4,7 @@ import Checkbox from '@mui/material/Checkbox';
 import { UiAddItemForm } from '../ui/ui-add-item-form';
 import { UiEditableSpan } from '../ui/ui-editable-span';
 import axios from 'axios';
+import { tasksReducer } from '../../entities';
 import { z } from 'zod';
 
 const TodolistSchema = z.object({
@@ -12,6 +13,8 @@ const TodolistSchema = z.object({
   addedDate: z.string(),
   order: z.number(),
 });
+
+const ApiTodolistsSchema = z.array(TodolistSchema);
 
 const FieldErrorSchema = z.object({
   error: z.string(),
@@ -41,14 +44,36 @@ const UpdateTodolistResponseSchema = z.object({
   data: z.object({}),
 });
 
-const ApiTodolistsSchema = z.array(TodolistSchema);
+const DomainTaskSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  description: z.union([z.string(), z.null()]),
+  todoListId: z.string(),
+  order: z.number(),
+  status: z.number(),
+  priority: z.number(),
+  startDate: z.union([z.string(), z.null()]),
+  deadline: z.union([z.string(), z.null()]),
+  addedDate: z.string(),
+});
+
+const TasksSchema = z.record(z.array(DomainTaskSchema));
+
+const GetTasksResponseSchema = z.object({
+  error: z.union([z.string(), z.null()]),
+  totalCount: z.number(),
+  items: z.array(DomainTaskSchema),
+});
 
 export type TodolistType = z.infer<typeof TodolistSchema>;
 export type TodolistsType = z.infer<typeof ApiTodolistsSchema>;
+export type TasksType = z.infer<typeof TasksSchema>;
+export type DomainTaskSchema = z.infer<typeof DomainTaskSchema>;
+type GetTasksResponseType = z.infer<typeof GetTasksResponseSchema>;
 
 export const AppHttpRequests = () => {
   const [todolists, setTodolists] = useState<TodolistsType>([]);
-  const [tasks, setTasks] = useState<any>({});
+  const [tasks, setTasks] = useState<TasksType>({});
 
   useEffect(() => {
     // get todolists
@@ -64,7 +89,8 @@ export const AppHttpRequests = () => {
       })
       .then(ApiTodolistsSchema.parse)
       .then((res) => {
-        setTodolists(res);
+        const getTodolists = res;
+        setTodolists(getTodolists);
       });
   }, []);
 
