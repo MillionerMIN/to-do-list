@@ -1,48 +1,17 @@
+import {
+  CreateTodolistResponseSchema,
+  GetTodolistsSchemaDto,
+  TodolistType,
+  TodolistsType,
+} from '../../entities/todolists/types';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 
 import Checkbox from '@mui/material/Checkbox';
 import { UiAddItemForm } from '../ui/ui-add-item-form';
 import { UiEditableSpan } from '../ui/ui-editable-span';
 import axios from 'axios';
-import { tasksReducer } from '../../entities';
+import { todolistsApi } from '../../entities';
 import { z } from 'zod';
-
-const TodolistSchema = z.object({
-  id: z.string(),
-  title: z.string(),
-  addedDate: z.string(),
-  order: z.number(),
-});
-
-const ApiTodolistsSchema = z.array(TodolistSchema);
-
-const FieldErrorSchema = z.object({
-  error: z.string(),
-  field: z.string(),
-});
-
-const CreateTodolistResponseSchema = z.object({
-  resultCode: z.number(),
-  messages: z.array(z.string()),
-  fieldsErrors: z.array(FieldErrorSchema),
-  data: z.object({
-    item: z.optional(TodolistSchema),
-  }),
-});
-
-const DeleteTodolistResponseSchema = z.object({
-  resultCode: z.number(),
-  messages: z.array(z.string()),
-  fieldsErrors: z.array(FieldErrorSchema),
-  data: z.object({}),
-});
-
-const UpdateTodolistResponseSchema = z.object({
-  resultCode: z.number(),
-  messages: z.array(z.string()),
-  fieldsErrors: z.array(FieldErrorSchema),
-  data: z.object({}),
-});
 
 const DomainTaskSchema = z.object({
   id: z.string(),
@@ -65,8 +34,6 @@ const GetTasksResponseSchema = z.object({
   items: z.array(DomainTaskSchema),
 });
 
-export type TodolistType = z.infer<typeof TodolistSchema>;
-export type TodolistsType = z.infer<typeof ApiTodolistsSchema>;
 export type TasksType = z.infer<typeof TasksSchema>;
 export type DomainTaskSchema = z.infer<typeof DomainTaskSchema>;
 type GetTasksResponseType = z.infer<typeof GetTasksResponseSchema>;
@@ -77,17 +44,13 @@ export const AppHttpRequests = () => {
 
   useEffect(() => {
     // get todolists
-    axios
-      .get('https://social-network.samuraijs.com/api/1.1/todo-lists', {
-        headers: {
-          Authorization: 'Bearer 64f6dc92-a60b-4bfb-b6eb-07fff1337a9d',
-        },
-      })
+    todolistsApi
+      .getTodolists()
       .then((res) => {
         console.log(res.data);
         return res.data;
       })
-      .then(ApiTodolistsSchema.parse)
+      .then(GetTodolistsSchemaDto.parse)
       .then((res) => {
         const getTodolists = res;
         setTodolists(getTodolists);
