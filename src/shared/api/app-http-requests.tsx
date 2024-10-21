@@ -1,42 +1,22 @@
 import {
   CreateTodolistResponseSchema,
+  DeleteTodolistResponseSchema,
   GetTodolistsSchemaDto,
   TodolistType,
   TodolistsType,
+  UpdateTodolistResponseSchema,
 } from '../../entities/todolists/types';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 
 import Checkbox from '@mui/material/Checkbox';
+import { CreateTaskResponseSchema } from '../../entities/task/types/create-task-response.types';
+import { TaskType } from '../../entities/task/types/taskSchema.types';
+import { TasksType } from '../../entities/task/types';
 import { UiAddItemForm } from '../ui/ui-add-item-form';
 import { UiEditableSpan } from '../ui/ui-editable-span';
-import axios from 'axios';
+import { UpdateTaskResponseSchema } from '../../entities/task/types/update-task-response.types';
+import { tasksApi } from '../../entities/task/api';
 import { todolistsApi } from '../../entities';
-import { z } from 'zod';
-
-const DomainTaskSchema = z.object({
-  id: z.string(),
-  title: z.string(),
-  description: z.union([z.string(), z.null()]),
-  todoListId: z.string(),
-  order: z.number(),
-  status: z.number(),
-  priority: z.number(),
-  startDate: z.union([z.string(), z.null()]),
-  deadline: z.union([z.string(), z.null()]),
-  addedDate: z.string(),
-});
-
-const TasksSchema = z.record(z.array(DomainTaskSchema));
-
-const GetTasksResponseSchema = z.object({
-  error: z.union([z.string(), z.null()]),
-  totalCount: z.number(),
-  items: z.array(DomainTaskSchema),
-});
-
-export type TasksType = z.infer<typeof TasksSchema>;
-export type DomainTaskSchema = z.infer<typeof DomainTaskSchema>;
-type GetTasksResponseType = z.infer<typeof GetTasksResponseSchema>;
 
 export const AppHttpRequests = () => {
   const [todolists, setTodolists] = useState<TodolistsType>([]);
@@ -54,21 +34,20 @@ export const AppHttpRequests = () => {
       .then((res) => {
         const getTodolists = res;
         setTodolists(getTodolists);
+        let tasksAll: TasksType = {};
+        getTodolists.map((tl) => {
+          tasksApi.getTasks(tl.id).then((res) => {
+            tasksAll = { ...tasksAll, [tl.id]: res.data.items };
+            console.log('TasksAll', tasksAll);
+            setTasks(tasksAll);
+          });
+        });
       });
   }, []);
 
   const createTodolistHandler = (title: string) => {
-    axios
-      .post(
-        'https://social-network.samuraijs.com/api/1.1/todo-lists',
-        { title },
-        {
-          headers: {
-            Authorization: 'Bearer 64f6dc92-a60b-4bfb-b6eb-07fff1337a9d',
-            'API-KEY': 'c776464e-9336-49f9-96f6-6e3857c87294',
-          },
-        }
-      )
+    todolistsApi
+      .createTodolist(title)
       .then((res) => {
         console.log(res.data);
         return res.data;
@@ -81,17 +60,8 @@ export const AppHttpRequests = () => {
   };
 
   const removeTodolistHandler = (id: string) => {
-    axios
-      .delete(
-        `https://social-network.samuraijs.com/api/1.1/todo-lists/${id}`,
-
-        {
-          headers: {
-            Authorization: 'Bearer 64f6dc92-a60b-4bfb-b6eb-07fff1337a9d',
-            'API-KEY': 'c776464e-9336-49f9-96f6-6e3857c87294',
-          },
-        }
-      )
+    todolistsApi
+      .removeTodolist(id)
       .then((res) => {
         console.log(res.data);
         return res.data;
@@ -104,18 +74,8 @@ export const AppHttpRequests = () => {
   };
 
   const updateTodolistHandler = (id: string, title: string) => {
-    axios
-      .put(
-        `https://social-network.samuraijs.com/api/1.1/todo-lists/${id}`,
-        { title },
-
-        {
-          headers: {
-            Authorization: 'Bearer 64f6dc92-a60b-4bfb-b6eb-07fff1337a9d',
-            'API-KEY': 'c776464e-9336-49f9-96f6-6e3857c87294',
-          },
-        }
-      )
+    todolistsApi
+      .updateTodolistTitle(id, title)
       .then((res) => {
         console.log(res.data);
         return res.data;
@@ -130,22 +90,61 @@ export const AppHttpRequests = () => {
   };
 
   const createTaskHandler = (title: string, todolistId: string) => {
-    // create task
+    tasksApi
+      .createTask(title, todolistId)
+      .then((res) => CreateTaskResponseSchema.parse(res.data))
+      .then((res) => {
+        setTasks({
+          ...tasks,
+          [todolistId]: [res.data.item, ...tasks[todolistId]],
+        } as TasksType);
+        console.log('Create', tasks);
+      });
   };
 
-  const removeTaskHandler = (taskId: string, todolistId: string) => {
-    // remove task
+  const removeTaskHandler = (todolistId: string, taskId: string) => {
+    tasksApi
+      .deleteTask(todolistId, taskId)
+      .then((res) => DeleteTodolistResponseSchema.parse(res.data))
+      .then(() => {
+        setTasks({
+          ...tasks,
+          [todolistId]: tasks[todolistId].filter((t) => t.id !== taskId),
+        });
+      });
   };
 
   const changeTaskStatusHandler = (
     e: ChangeEvent<HTMLInputElement>,
-    task: any
+    task: TaskType
   ) => {
-    // update task status
+    const { todoListId, id } = task;
+    tasksApi
+      .changeStatusTask(todoListId, id, e.target.checked)
+      .then((res) => UpdateTaskResponseSchema.parse(res.data))
+      .then((res) => {
+        setTasks({
+          ...tasks,
+          [todoListId]: tasks[todoListId].map((t) =>
+            t.id === id ? { ...t, completed: res.data?.item.completed } : t
+          ),
+        });
+      });
   };
 
-  const changeTaskTitleHandler = (title: string, task: any) => {
-    // update task title
+  const changeTaskTitleHandler = (task: TaskType, title: string) => {
+    const { todoListId, id } = task;
+    tasksApi
+      .changeTitleTask(todoListId, id, title)
+      .then((res) => UpdateTaskResponseSchema.parse(res.data))
+      .then((res) => {
+        setTasks({
+          ...tasks,
+          [todoListId]: tasks[todoListId].map((t) =>
+            t.id === task.id ? { ...t, title: res.data?.item.title } : t
+          ),
+        } as TasksType);
+      });
   };
 
   return (
@@ -153,7 +152,7 @@ export const AppHttpRequests = () => {
       <UiAddItemForm addItem={createTodolistHandler} />
 
       {/* Todolists */}
-      {todolists.map((tl: any) => {
+      {todolists.map((tl) => {
         return (
           <div key={tl.id} style={todolist}>
             <div>
@@ -171,18 +170,18 @@ export const AppHttpRequests = () => {
 
             {/* Tasks */}
             {!!tasks[tl.id] &&
-              tasks[tl.id].map((task: any) => {
+              tasks[tl.id].map((task) => {
                 return (
                   <div key={task.id}>
                     <Checkbox
-                      checked={task.isDone}
+                      checked={task.completed}
                       onChange={(e) => changeTaskStatusHandler(e, task)}
                     />
                     <UiEditableSpan
                       value={task.title}
-                      onChange={(title) => changeTaskTitleHandler(title, task)}
+                      onChange={(title) => changeTaskTitleHandler(task, title)}
                     />
-                    <button onClick={() => removeTaskHandler(task.id, tl.id)}>
+                    <button onClick={() => removeTaskHandler(tl.id, task.id)}>
                       x
                     </button>
                   </div>
