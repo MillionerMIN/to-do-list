@@ -1,56 +1,26 @@
-import { TodolistsType } from '../types';
-import axios from 'axios';
+import {
+  CreateTodolistType,
+  DeleteTodolistType,
+  UpdateTodolistType,
+} from '../../../shared';
+
+import { TodolistsType } from '../../../shared';
+import { instanceApi } from '../../../shared';
 
 export const todolistsApi = {
   getTodolists() {
-    const promise = axios.get<TodolistsType>(
-      'https://social-network.samuraijs.com/api/1.1/todo-lists',
-      {
-        headers: {
-          Authorization: 'Bearer 64f6dc92-a60b-4bfb-b6eb-07fff1337a9d',
-        },
-      }
-    );
-    return promise;
+    return instanceApi.get<TodolistsType>('/todo-lists');
   },
   createTodolist(title: string) {
-    const promise = axios.post(
-      'https://social-network.samuraijs.com/api/1.1/todo-lists',
-      { title },
-      {
-        headers: {
-          Authorization: 'Bearer 64f6dc92-a60b-4bfb-b6eb-07fff1337a9d',
-          'API-KEY': 'c776464e-9336-49f9-96f6-6e3857c87294',
-        },
-      }
-    );
-    return promise;
+    return instanceApi.post<CreateTodolistType>('/todo-lists', {
+      title,
+    });
   },
   removeTodolist(id: string) {
-    const promise = axios.delete(
-      `https://social-network.samuraijs.com/api/1.1/todo-lists/${id}`,
-
-      {
-        headers: {
-          Authorization: 'Bearer 64f6dc92-a60b-4bfb-b6eb-07fff1337a9d',
-          'API-KEY': 'c776464e-9336-49f9-96f6-6e3857c87294',
-        },
-      }
-    );
-    return promise;
+    return instanceApi.delete<DeleteTodolistType>(`/todo-lists/${id}`);
   },
-  updateTodolistTitle(id: string, title: string) {
-    const promise = axios.put(
-      `https://social-network.samuraijs.com/api/1.1/todo-lists/${id}`,
-      { title },
-
-      {
-        headers: {
-          Authorization: 'Bearer 64f6dc92-a60b-4bfb-b6eb-07fff1337a9d',
-          'API-KEY': 'c776464e-9336-49f9-96f6-6e3857c87294',
-        },
-      }
-    );
-    return promise;
+  updateTodolistTitle(payload: { id: string; title: string }) {
+    const { id, title } = payload;
+    return instanceApi.put<UpdateTodolistType>(`/todo-lists/${id}`, { title });
   },
 };

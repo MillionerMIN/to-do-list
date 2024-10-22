@@ -1,68 +1,76 @@
-import axios from 'axios';
+import {
+  CreateTaskType,
+  DeleteTaskType,
+  GetTasksType,
+  TaskType,
+  UpdateTaskType,
+} from '../../../shared';
+
+import { instanceApi } from '../../../shared';
 
 export const tasksApi = {
   getTasks(id: string) {
-    const promise = axios.get(
-      `https://social-network.samuraijs.com/api/1.1/todo-lists/${id}/tasks`,
+    return instanceApi.get<GetTasksType>(`/todo-lists/${id}/tasks`);
+  },
+  createTask(payload: { title: string; todolistId: string }) {
+    const { title, todolistId } = payload;
+    return instanceApi.post<CreateTaskType>(`/todo-lists/${todolistId}/tasks`, {
+      title,
+    });
+  },
+  deleteTask(payload: { todolistId: string; taskId: string }) {
+    const { todolistId, taskId } = payload;
+    return instanceApi.delete<DeleteTaskType>(
+      `/todo-lists/${todolistId}/tasks/${taskId}`
+    );
+  },
+  changeTitleTask(payload: { task: TaskType; title: string }) {
+    const { title } = payload;
+    const {
+      todoListId,
+      id,
+      description,
 
+      status,
+      priority,
+      startDate,
+      deadline,
+    } = payload.task;
+    return instanceApi.put<UpdateTaskType>(
+      `/todo-lists/${todoListId}/tasks/${id}`,
       {
-        headers: {
-          Authorization: 'Bearer 64f6dc92-a60b-4bfb-b6eb-07fff1337a9d',
-          'API-KEY': 'c776464e-9336-49f9-96f6-6e3857c87294',
-        },
+        title,
+        description,
+        status,
+        priority,
+        startDate,
+        deadline,
       }
     );
-    return promise;
   },
-  createTask(title: string, todolistId: string) {
-    const promise = axios.post(
-      `https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}/tasks`,
-      { title },
+  changeStatusTask(payload: { task: TaskType; isDone: boolean }) {
+    const { isDone } = payload;
+    const {
+      todoListId,
+      id,
+      description,
+      priority,
+      startDate,
+      deadline,
+      title,
+    } = payload.task;
+
+    const status = isDone ? 1 : 0;
+    return instanceApi.put<UpdateTaskType>(
+      `/todo-lists/${todoListId}/tasks/${id}`,
       {
-        headers: {
-          Authorization: 'Bearer 64f6dc92-a60b-4bfb-b6eb-07fff1337a9d',
-          'API-KEY': 'c776464e-9336-49f9-96f6-6e3857c87294',
-        },
+        title,
+        description,
+        status,
+        priority,
+        startDate,
+        deadline,
       }
     );
-    return promise;
-  },
-  deleteTask(todolistId: string, taskId: string) {
-    const promise = axios.delete(
-      `https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}/tasks/${taskId}`,
-      {
-        headers: {
-          Authorization: 'Bearer 64f6dc92-a60b-4bfb-b6eb-07fff1337a9d',
-          'API-KEY': 'c776464e-9336-49f9-96f6-6e3857c87294',
-        },
-      }
-    );
-    return promise;
-  },
-  changeTitleTask(todolistId: string, taskId: string, title: string) {
-    const promise = axios.put(
-      `https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}/tasks/${taskId}`,
-      { title },
-      {
-        headers: {
-          Authorization: 'Bearer 64f6dc92-a60b-4bfb-b6eb-07fff1337a9d',
-          'API-KEY': 'c776464e-9336-49f9-96f6-6e3857c87294',
-        },
-      }
-    );
-    return promise;
-  },
-  changeStatusTask(todolistId: string, taskId: string, isDone: boolean) {
-    const promise = axios.put(
-      `https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}/tasks/${taskId}`,
-      { completed: isDone },
-      {
-        headers: {
-          Authorization: 'Bearer 64f6dc92-a60b-4bfb-b6eb-07fff1337a9d',
-          'API-KEY': 'c776464e-9336-49f9-96f6-6e3857c87294',
-        },
-      }
-    );
-    return promise;
   },
 };

@@ -1,20 +1,21 @@
 import {
+  CreateTaskResponseSchema,
   CreateTodolistResponseSchema,
   DeleteTodolistResponseSchema,
-  GetTodolistsSchemaDto,
+  GetTasksResponseSchema,
+  TaskType,
+  TasksType,
   TodolistType,
+  TodolistsDtoSchema,
   TodolistsType,
+  UpdateTaskResponseSchema,
   UpdateTodolistResponseSchema,
-} from '../../entities/todolists/types';
+} from '../types';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 
 import Checkbox from '@mui/material/Checkbox';
-import { CreateTaskResponseSchema } from '../../entities/task/types/create-task-response.types';
-import { TaskType } from '../../entities/task/types/taskSchema.types';
-import { TasksType } from '../../entities/task/types';
 import { UiAddItemForm } from '../ui/ui-add-item-form';
 import { UiEditableSpan } from '../ui/ui-editable-span';
-import { UpdateTaskResponseSchema } from '../../entities/task/types/update-task-response.types';
 import { tasksApi } from '../../entities/task/api';
 import { todolistsApi } from '../../entities';
 
@@ -30,14 +31,15 @@ export const AppHttpRequests = () => {
         console.log(res.data);
         return res.data;
       })
-      .then(GetTodolistsSchemaDto.parse)
+      .then(TodolistsDtoSchema.parse)
       .then((res) => {
         const getTodolists = res;
         setTodolists(getTodolists);
         let tasksAll: TasksType = {};
         getTodolists.map((tl) => {
           tasksApi.getTasks(tl.id).then((res) => {
-            tasksAll = { ...tasksAll, [tl.id]: res.data.items };
+            GetTasksResponseSchema.parse(res.data);
+            tasksAll = { ...tasksAll, [tl.id]: res.data.items } as TasksType;
             console.log('TasksAll', tasksAll);
             setTasks(tasksAll);
           });
@@ -75,13 +77,9 @@ export const AppHttpRequests = () => {
 
   const updateTodolistHandler = (id: string, title: string) => {
     todolistsApi
-      .updateTodolistTitle(id, title)
-      .then((res) => {
-        console.log(res.data);
-        return res.data;
-      })
+      .updateTodolistTitle({ id, title })
+      .then((res) => UpdateTodolistResponseSchema.parse(res.data))
       .then(() => {
-        UpdateTodolistResponseSchema.parse;
         const newTodolists = todolists.map((tl) =>
           tl.id === id ? { ...tl, title } : tl
         );
@@ -91,7 +89,7 @@ export const AppHttpRequests = () => {
 
   const createTaskHandler = (title: string, todolistId: string) => {
     tasksApi
-      .createTask(title, todolistId)
+      .createTask({ title, todolistId })
       .then((res) => CreateTaskResponseSchema.parse(res.data))
       .then((res) => {
         setTasks({
@@ -104,7 +102,7 @@ export const AppHttpRequests = () => {
 
   const removeTaskHandler = (todolistId: string, taskId: string) => {
     tasksApi
-      .deleteTask(todolistId, taskId)
+      .deleteTask({ todolistId, taskId })
       .then((res) => DeleteTodolistResponseSchema.parse(res.data))
       .then(() => {
         setTasks({
@@ -120,28 +118,35 @@ export const AppHttpRequests = () => {
   ) => {
     const { todoListId, id } = task;
     tasksApi
-      .changeStatusTask(todoListId, id, e.target.checked)
-      .then((res) => UpdateTaskResponseSchema.parse(res.data))
+      .changeStatusTask({ task, isDone: e.target.checked })
+      .then((res) => {
+        console.log(res.data);
+        UpdateTaskResponseSchema.parse(res.data);
+        return res.data;
+      })
       .then((res) => {
         setTasks({
           ...tasks,
           [todoListId]: tasks[todoListId].map((t) =>
-            t.id === id ? { ...t, completed: res.data?.item.completed } : t
+            t.id === id ? { ...t, status: res.data.item.status } : t
           ),
         });
       });
   };
 
   const changeTaskTitleHandler = (task: TaskType, title: string) => {
-    const { todoListId, id } = task;
+    const { todoListId } = task;
     tasksApi
-      .changeTitleTask(todoListId, id, title)
-      .then((res) => UpdateTaskResponseSchema.parse(res.data))
+      .changeTitleTask({ task, title })
+      .then((res) => {
+        UpdateTaskResponseSchema.parse(res.data);
+        return res.data;
+      })
       .then((res) => {
         setTasks({
           ...tasks,
           [todoListId]: tasks[todoListId].map((t) =>
-            t.id === task.id ? { ...t, title: res.data?.item.title } : t
+            t.id === task.id ? { ...t, title: res.data.item.title } : t
           ),
         } as TasksType);
       });
@@ -174,7 +179,7 @@ export const AppHttpRequests = () => {
                 return (
                   <div key={task.id}>
                     <Checkbox
-                      checked={task.completed}
+                      checked={!!task.status}
                       onChange={(e) => changeTaskStatusHandler(e, task)}
                     />
                     <UiEditableSpan
