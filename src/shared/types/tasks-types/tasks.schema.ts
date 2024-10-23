@@ -1,11 +1,13 @@
+import { TaskPrioritiesEnum, TaskStatusEnum } from '../../enums';
+
 import { BaseTasksResponseSchema } from './base-tasks-response.schema';
 import { z } from 'zod';
 
 export const TaskSchema = z.object({
   description: z.union([z.string(), z.null()]),
   title: z.string(),
-  status: z.number(),
-  priority: z.number(),
+  status: TaskStatusEnum,
+  priority: TaskPrioritiesEnum,
   startDate: z.union([z.string(), z.null()]),
   deadline: z.union([z.string(), z.null()]),
   id: z.string(),

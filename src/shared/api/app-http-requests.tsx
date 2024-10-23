@@ -14,6 +14,7 @@ import {
 import React, { ChangeEvent, useEffect, useState } from 'react';
 
 import Checkbox from '@mui/material/Checkbox';
+import { TaskStatus } from '../enums';
 import { UiAddItemForm } from '../ui/ui-add-item-form';
 import { UiEditableSpan } from '../ui/ui-editable-span';
 import { tasksApi } from '../../entities/task/api';
@@ -115,8 +116,9 @@ export const AppHttpRequests = () => {
     task: TaskType
   ) => {
     const { todoListId, id } = task;
+    const status = e.target.checked ? TaskStatus.Completed : TaskStatus.New;
     tasksApi
-      .changeStatusTask({ task, isDone: e.target.checked })
+      .changeStatusTask({ task, status })
       .then((res) => {
         console.log(res.data);
         UpdateTaskResponseSchema.parse(res.data);

@@ -2,6 +2,7 @@ import {
   CreateTaskType,
   DeleteTaskType,
   GetTasksType,
+  TaskStatus,
   TaskType,
   UpdateTaskType,
 } from '../../../shared';
@@ -48,8 +49,8 @@ export const tasksApi = {
       }
     );
   },
-  changeStatusTask(payload: { task: TaskType; isDone: boolean }) {
-    const { isDone } = payload;
+  changeStatusTask(payload: { task: TaskType; status: TaskStatus }) {
+    const { status } = payload;
     const {
       todoListId,
       id,
@@ -60,7 +61,6 @@ export const tasksApi = {
       title,
     } = payload.task;
 
-    const status = isDone ? 1 : 0;
     return instanceApi.put<UpdateTaskType>(
       `/todo-lists/${todoListId}/tasks/${id}`,
       {
