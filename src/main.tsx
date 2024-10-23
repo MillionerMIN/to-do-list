@@ -1,6 +1,6 @@
 import './app/styles/global.css';
 
-import { AppWithRedux as App } from './app';
+// import { AppWithRedux as App } from './app';
 import { AppHttpRequests } from './app/app-http-requests';
 import { StrictMode } from 'react';
 import { StyledEngineProvider } from '@mui/material';

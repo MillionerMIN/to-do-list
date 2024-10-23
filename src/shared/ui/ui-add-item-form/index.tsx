@@ -28,17 +28,13 @@ export function UiAddItemForm({ addItem }: Props) {
 
   function addItemOnKeyUpHandler(event: KeyboardEvent<HTMLInputElement>) {
     setError(null);
-    event.key === 'Enter' && addItemHandler();
+    if (event.key === 'Enter') addItemHandler();
   }
 
   return (
     <div className='flex items-start gap-2'>
       <UiField
-        className={
-          error
-            ? 'outline-none outline-2 -outline-offset-2 outline-ping/25'
-            : ''
-        }
+        className={error ? 'outline-none outline-2 -outline-offset-2 outline-ping/25' : ''}
         value={taskTitle}
         onChange={changeItemTitleHandler}
         onKeyUp={addItemOnKeyUpHandler}

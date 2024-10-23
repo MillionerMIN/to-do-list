@@ -3,6 +3,7 @@
   "jsxSingleQuote": true,
   "endOfLine": "auto",
   "tabWidth": 2,
+  "printWidth": 120,
   "singleQuote": true,
   "prettier/prettier": [
     "error",
