@@ -31,7 +31,6 @@ export const tasksApi = {
       todoListId,
       id,
       description,
-
       status,
       priority,
       startDate,

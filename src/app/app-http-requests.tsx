@@ -3,22 +3,21 @@ import {
   CreateTodolistResponseSchema,
   DeleteTodolistResponseSchema,
   GetTasksResponseSchema,
+  TaskStatus,
   TaskType,
   TasksType,
   TodolistType,
   TodolistsDtoSchema,
   TodolistsType,
+  UiAddItemForm,
+  UiEditableSpan,
   UpdateTaskResponseSchema,
   UpdateTodolistResponseSchema,
-} from '../types';
+} from '@/shared';
 import React, { ChangeEvent, useEffect, useState } from 'react';
+import { tasksApi, todolistsApi } from '@/entities';
 
 import Checkbox from '@mui/material/Checkbox';
-import { TaskStatus } from '../enums';
-import { UiAddItemForm } from '../ui/ui-add-item-form';
-import { UiEditableSpan } from '../ui/ui-editable-span';
-import { tasksApi } from '../../entities/task/api';
-import { todolistsApi } from '../../entities';
 
 export const AppHttpRequests = () => {
   const [todolists, setTodolists] = useState<TodolistsType>([]);
