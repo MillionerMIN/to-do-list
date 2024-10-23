@@ -28,7 +28,6 @@ export const AppHttpRequests = () => {
     todolistsApi
       .getTodolists()
       .then((res) => {
-        console.log(res.data);
         return res.data;
       })
       .then(TodolistsDtoSchema.parse)
@@ -40,7 +39,6 @@ export const AppHttpRequests = () => {
           tasksApi.getTasks(tl.id).then((res) => {
             GetTasksResponseSchema.parse(res.data);
             tasksAll = { ...tasksAll, [tl.id]: res.data.items } as TasksType;
-            console.log('TasksAll', tasksAll);
             setTasks(tasksAll);
           });
         });
