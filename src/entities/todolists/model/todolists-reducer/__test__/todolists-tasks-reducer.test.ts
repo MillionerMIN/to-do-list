@@ -1,6 +1,6 @@
 import { TasksStateType, TodolistType } from '../../../../../shared';
 
-import { addTodolistAC } from '../actions';
+import { addTodolistAC } from '../actions-todolists';
 import { tasksReducer } from '../../../../task';
 import { todolistsReducer } from '../todolists-reducer';
 

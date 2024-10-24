@@ -1,9 +1,8 @@
 import { RootState } from '../../../../app';
-import { TodolistType } from '../../../../shared';
+import { TodolistWithFilterType } from '../../types';
 
 export const selectTodolists = (state: RootState) => state.todolists;
 export const selectTodolistById = (todolistId: string) => (state: RootState) =>
-  state.todolists.find((tl) => tl.id === todolistId) as TodolistType;
-export const selectFilterTodolistById =
-  (todolistId: string) => (state: RootState) =>
-    state.todolists.find((tl) => tl.id === todolistId) as TodolistType;
+  state.todolists.find((tl) => tl.id === todolistId) as TodolistWithFilterType;
+export const selectFilterTodolistById = (todolistId: string) => (state: RootState) =>
+  state.todolists.find((tl) => tl.id === todolistId) as TodolistWithFilterType;

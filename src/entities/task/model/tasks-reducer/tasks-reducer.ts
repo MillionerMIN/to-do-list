@@ -1,13 +1,10 @@
 import { TasksActionsType } from './actions';
-import { TasksStateType } from '../../../../shared';
+import { TasksType } from '@/shared';
 import { v1 } from 'uuid';
 
-const initialState: TasksStateType = {};
+const initialState: TasksType = {};
 
-export const tasksReducer = (
-  state: TasksStateType = initialState,
-  action: TasksActionsType
-): TasksStateType => {
+export const tasksReducer = (state: TasksType = initialState, action: TasksActionsType): TasksType => {
   switch (action.type) {
     case 'REMOVE-TASK': {
       return {
@@ -32,10 +29,7 @@ export const tasksReducer = (
       };
       return {
         ...state,
-        [action.payload.todolistId]: [
-          ...state[action.payload.todolistId],
-          newTask,
-        ],
+        [action.payload.todolistId]: [...state[action.payload.todolistId], newTask],
       };
     }
     case 'CHANGE-TASK-STATUS': {
@@ -43,9 +37,7 @@ export const tasksReducer = (
         ...state,
         [action.payload.todolistId]: [
           ...state[action.payload.todolistId].map((task) =>
-            task.id === action.payload.taskId
-              ? { ...task, isDone: action.payload.isDone }
-              : task
+            task.id === action.payload.taskId ? { ...task, isDone: action.payload.isDone } : task
           ),
         ],
       };
@@ -55,9 +47,7 @@ export const tasksReducer = (
         ...state,
         [action.payload.todolistId]: [
           ...state[action.payload.todolistId].map((task) =>
-            task.id === action.payload.taskId
-              ? { ...task, title: action.payload.title }
-              : task
+            task.id === action.payload.taskId ? { ...task, title: action.payload.title } : task
           ),
         ],
       };

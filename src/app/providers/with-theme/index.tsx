@@ -1,7 +1,7 @@
 import { CssBaseline, Box as MuiBox } from '@mui/material';
 import { ThemeProvider, styled } from '@mui/material/styles';
 
-import { getTheme } from '../../../shared';
+import { useGetTheme } from '@/shared';
 
 type WithThemeType = {
   children: React.ReactNode;
@@ -13,7 +13,7 @@ const UiBox = styled(MuiBox)(({ theme }) => ({
 }));
 
 export function WithTheme({ children }: WithThemeType) {
-  const theme = getTheme();
+  const theme = useGetTheme();
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline enableColorScheme />

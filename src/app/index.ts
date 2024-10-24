@@ -1,2 +1,2 @@
-export type { RootState } from './store';
-export { AppWithRedux } from './app';
+export type { RootState, AppDispatch } from './store';
+export { AppWithRedux } from './App.tsx';

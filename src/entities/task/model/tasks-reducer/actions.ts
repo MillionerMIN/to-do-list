@@ -1,12 +1,9 @@
 import type {
   AddTodolistActionType,
   RemoveTodolistActionType,
-} from '../../../todolists/model/todolists-reducer/actions';
+} from '../../../todolists/model/todolists-reducer/actions-todolists';
 
-export const removeTaskAC = (payload: {
-  taskId: string;
-  todolistId: string;
-}) => {
+export const removeTaskAC = (payload: { taskId: string; todolistId: string }) => {
   return { type: 'REMOVE-TASK', payload } as const;
 };
 
@@ -14,22 +11,14 @@ export const addTaskAC = (payload: { title: string; todolistId: string }) => {
   return { type: 'ADD-TASK', payload } as const;
 };
 
-export const changeTaskStatusAC = (payload: {
-  taskId: string;
-  isDone: boolean;
-  todolistId: string;
-}) => {
+export const changeTaskStatusAC = (payload: { taskId: string; isDone: boolean; todolistId: string }) => {
   return {
     type: 'CHANGE-TASK-STATUS',
     payload,
   } as const;
 };
 
-export const changeTaskTitleAC = (payload: {
-  taskId: string;
-  title: string;
-  todolistId: string;
-}) => {
+export const changeTaskTitleAC = (payload: { taskId: string; title: string; todolistId: string }) => {
   return { type: 'CHANGE-TASK-TITLE', payload } as const;
 };
 
