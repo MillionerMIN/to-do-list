@@ -1,6 +1,6 @@
-import { CreateTaskType, DeleteTaskType, GetTasksType, TaskStatus, TaskType, UpdateTaskType } from '@/shared';
+import { CreateTaskType, DeleteTaskType, GetTasksType, UpdateTaskType } from '@/shared';
+import { UpdateTaskStatusType, UpdateTaskTitleType } from '../types';
 
-import { UpdateTaskParamsType } from '../types';
 import { instanceApi } from '@/shared';
 
 export const tasksApi = {
@@ -17,19 +17,12 @@ export const tasksApi = {
     const { todoListId, taskId } = payload;
     return instanceApi.delete<DeleteTaskType>(`/todo-lists/${todoListId}/tasks/${taskId}`);
   },
-  changeTitleTask(payload: { task: TaskType; title: string }) {
-    const { title } = payload;
-    const { todoListId, id, description, status, priority, startDate, deadline } = payload.task;
-    return instanceApi.put<UpdateTaskType>(`/todo-lists/${todoListId}/tasks/${id}`, {
-      title,
-      description,
-      status,
-      priority,
-      startDate,
-      deadline,
-    });
+  changeTitleTask(payload: { taskId: string; todoListId: string; model: UpdateTaskTitleType }) {
+    const { taskId, todoListId } = payload;
+
+    return instanceApi.put<UpdateTaskType>(`/todo-lists/${todoListId}/tasks/${taskId}`, payload.model);
   },
-  updateStatusTask(payload: { taskId: string; todoListId: string; model: UpdateTaskParamsType }) {
+  updateStatusTask(payload: { taskId: string; todoListId: string; model: UpdateTaskStatusType }) {
     const { taskId, todoListId } = payload;
 
     return instanceApi.put<UpdateTaskType>(`/todo-lists/${todoListId}/tasks/${taskId}`, payload.model);

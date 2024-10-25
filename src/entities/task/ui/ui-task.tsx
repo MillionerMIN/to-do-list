@@ -1,13 +1,5 @@
-import {
-  TaskStatus,
-  TaskType,
-  UiCheckbox,
-  UiEditableSpan,
-  UiIconButton,
-  useAppDispatch,
-  useAppSelector,
-} from '@/shared';
-import { changeTaskTitleAC, removeTaskTC, selectTaskByTaskId } from '../model';
+import { TaskStatus, UiCheckbox, UiEditableSpan, UiIconButton, useAppDispatch, useAppSelector } from '@/shared';
+import { changeTaskTitleTC, removeTaskTC, selectTaskByTaskId } from '../model';
 
 import { ChangeEvent } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -26,7 +18,7 @@ export function UiTask({ todoListId, taskId }: PropsType) {
     dispatch(removeTaskTC({ taskId, todoListId }));
   }
 
-  function changeTaskStatusHandler(event: ChangeEvent<HTMLInputElement>, task: TaskType) {
+  function changeTaskStatusHandler(event: ChangeEvent<HTMLInputElement>) {
     const status = event.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New;
     dispatch(
       changeTaskStatusTC({
@@ -38,7 +30,7 @@ export function UiTask({ todoListId, taskId }: PropsType) {
   }
 
   function changeTaskTitleHandler(title: string) {
-    dispatch(changeTaskTitleAC({ taskId, title, todoListId }));
+    dispatch(changeTaskTitleTC({ title, taskId, todoListId }));
   }
 
   return (
@@ -49,7 +41,7 @@ export function UiTask({ todoListId, taskId }: PropsType) {
       className={clsx('justify-between', !!task.status && 'opacity-30')}
     >
       <div className='flex gap-2'>
-        <UiCheckbox checked={!!task.status} onChange={(e) => changeTaskStatusHandler(e, task)} />
+        <UiCheckbox checked={!!task.status} onChange={changeTaskStatusHandler} />
         <UiEditableSpan value={task.title} onChange={changeTaskTitleHandler} />
       </div>
 

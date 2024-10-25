@@ -2,7 +2,7 @@ import { TaskPrioritiesEnum, TaskStatusEnum } from '@/shared';
 
 import { z } from 'zod';
 
-export const UpdateTaskParamsSchema = z.object({
+export const UpdateTaskStatusSchema = z.object({
   title: z.string(),
   description: z.union([z.string(), z.null()]),
   status: TaskStatusEnum,
@@ -11,4 +11,4 @@ export const UpdateTaskParamsSchema = z.object({
   deadline: z.union([z.string(), z.null()]),
 });
 
-export type UpdateTaskParamsType = z.infer<typeof UpdateTaskParamsSchema>;
+export type UpdateTaskStatusType = z.infer<typeof UpdateTaskStatusSchema>;

@@ -2,7 +2,7 @@ import { TaskStatusEnum, UpdateTaskResponseSchema } from '@/shared';
 
 import { Dispatch } from 'redux';
 import { RootState } from '@/app';
-import { UpdateTaskParamsType } from '@/entities/task/types';
+import { UpdateTaskStatusType } from '@/entities/task/types';
 import { changeTaskStatusAC } from '../tasks-actions';
 import { tasksApi } from '@/entities/task/api';
 
@@ -16,7 +16,7 @@ export const changeTaskStatusTC =
     const task = tasksForCurrentTodolist.find((t) => t.id === taskId);
 
     if (task) {
-      const model: UpdateTaskParamsType = {
+      const model: UpdateTaskStatusType = {
         status,
         title: task.title,
         description: task.description,

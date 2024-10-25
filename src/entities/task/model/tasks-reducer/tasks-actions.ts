@@ -2,7 +2,8 @@ import type {
   AddTodolistActionType,
   RemoveTodolistActionType,
 } from '../../../todolists/model/todolists-reducer/actions-todolists';
-import { TaskStatusEnum, TaskType } from '@/shared';
+
+import { TaskType } from '@/shared';
 
 export const setTasksAC = (payload: { todoListId: string; tasks: TaskType[] }) => {
   return { type: 'SET-TASKS', payload } as const;
@@ -22,7 +23,7 @@ export const changeTaskStatusAC = (payload: { task: TaskType }) => {
   } as const;
 };
 
-export const changeTaskTitleAC = (payload: { taskId: string; title: string; todoListId: string }) => {
+export const changeTaskTitleAC = (payload: { task: TaskType }) => {
   return { type: 'CHANGE-TASK-TITLE', payload } as const;
 };
 
