@@ -1,7 +1,5 @@
 import { FilterTodolistType, TodolistType } from '@/shared';
 
-import { v1 } from 'uuid';
-
 export const setTodolistsAC = (todolists: TodolistType[]) => {
   return { type: 'SET-TODOLISTS', todolists } as const;
 };
@@ -9,14 +7,14 @@ export const removeTodolistAC = (todoListId: string) => {
   return { type: 'REMOVE-TODOLIST', payload: { todoListId } } as const;
 };
 
-export const addTodolistAC = (title: string) => {
+export const addTodolistAC = (todolist: TodolistType) => {
   return {
     type: 'ADD-TODOLIST',
-    payload: { title, todoListId: v1() },
+    payload: { todolist },
   } as const;
 };
 
-export const changedTodolistTitleAC = (payload: { todoListId: string; title: string }) => {
+export const changedTodolistTitleAC = (payload: { id: string; title: string }) => {
   return {
     type: 'CHANGE-TODOLIST-TITLE',
     payload,

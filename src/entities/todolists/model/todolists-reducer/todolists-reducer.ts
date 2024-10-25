@@ -15,19 +15,16 @@ export const todolistsReducer = (
       return state.filter((tl) => tl.id !== action.payload.todoListId);
     }
     case 'ADD-TODOLIST': {
+      const { ...props } = action.payload.todolist;
       const newTodolist: TodolistWithFilterType = {
-        id: action.payload.todoListId,
-        title: action.payload.title,
+        ...props,
         filter: 'all',
-        addedDate: '',
-        order: 0,
       };
       return [...state, newTodolist];
     }
     case 'CHANGE-TODOLIST-TITLE': {
-      const newTodolistTitle = state.map((tl) =>
-        tl.id === action.payload.todoListId ? { ...tl, title: action.payload.title } : tl
-      );
+      const { id, title } = action.payload;
+      const newTodolistTitle = state.map((tl) => (tl.id === id ? { ...tl, title } : tl));
       return newTodolistTitle;
     }
     case 'CHANGE-TODOLIST-FILTER': {

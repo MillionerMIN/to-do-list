@@ -7,12 +7,14 @@ export const todolistsApi = {
   getTodolists() {
     return instanceApi.get<TodolistsType>('/todo-lists');
   },
-  createTodolist(title: string) {
+  createTodolist(payload: { title: string }) {
+    const { title } = payload;
     return instanceApi.post<CreateTodolistType>('/todo-lists', {
       title,
     });
   },
-  removeTodolist(id: string) {
+  removeTodolist(payload: { id: string }) {
+    const { id } = payload;
     return instanceApi.delete<DeleteTodolistType>(`/todo-lists/${id}`);
   },
   updateTodolistTitle(payload: { id: string; title: string }) {

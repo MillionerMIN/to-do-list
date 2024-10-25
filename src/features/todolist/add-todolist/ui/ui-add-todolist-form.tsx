@@ -1,11 +1,11 @@
 import { UiAddItemForm, useAppDispatch } from '@/shared';
 
-import { addTodolistAC } from '@/entities';
+import { addTodolistTC } from '@/entities';
 
 export function UiAddTodolistForm() {
   const dispatch = useAppDispatch();
   const addTodolist = (title: string) => {
-    dispatch(addTodolistAC(title));
+    dispatch(addTodolistTC({ title }));
   };
   return <UiAddItemForm addItem={addTodolist} />;
 }

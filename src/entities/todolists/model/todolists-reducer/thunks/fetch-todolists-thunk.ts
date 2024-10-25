@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
 import { TodolistsDtoSchema } from '@/shared';
-import { setTodolistsAC } from './actions-todolists';
-import { todolistsApi } from '../../api';
+import { setTodolistsAC } from '../actions-todolists';
+import { todolistsApi } from '@/entities/todolists/api';
 
 export const fetchTodolistsThunk = (dispatch: Dispatch) => {
   todolistsApi

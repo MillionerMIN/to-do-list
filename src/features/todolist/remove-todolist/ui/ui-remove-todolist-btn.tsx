@@ -1,7 +1,7 @@
 import { UiIconButton, useAppDispatch } from '@/shared';
 
 import DeleteIcon from '@mui/icons-material/Delete';
-import { removeTodolistAC } from '@/entities';
+import { removeTodolistTC } from '@/entities';
 
 type PropsType = {
   todoListId: string;
@@ -9,7 +9,7 @@ type PropsType = {
 export function UiRemoveTodolistBtn({ todoListId }: PropsType) {
   const dispatch = useAppDispatch();
   const removeTodolistHandler = () => {
-    dispatch(removeTodolistAC(todoListId));
+    dispatch(removeTodolistTC({ id: todoListId }));
   };
   return (
     <UiIconButton
