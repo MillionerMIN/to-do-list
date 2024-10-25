@@ -12,11 +12,11 @@ export const todolistsReducer = (
       return action.todolists.map((tl) => ({ ...tl, filter: 'all' }));
     }
     case 'REMOVE-TODOLIST': {
-      return state.filter((tl) => tl.id !== action.payload.todolistId);
+      return state.filter((tl) => tl.id !== action.payload.todoListId);
     }
     case 'ADD-TODOLIST': {
       const newTodolist: TodolistWithFilterType = {
-        id: action.payload.todolistId,
+        id: action.payload.todoListId,
         title: action.payload.title,
         filter: 'all',
         addedDate: '',
@@ -26,13 +26,13 @@ export const todolistsReducer = (
     }
     case 'CHANGE-TODOLIST-TITLE': {
       const newTodolistTitle = state.map((tl) =>
-        tl.id === action.payload.todolistId ? { ...tl, title: action.payload.title } : tl
+        tl.id === action.payload.todoListId ? { ...tl, title: action.payload.title } : tl
       );
       return newTodolistTitle;
     }
     case 'CHANGE-TODOLIST-FILTER': {
       const newTodolists = state.map((tl) =>
-        tl.id === action.payload.todolistId ? { ...tl, filter: action.payload.filter } : tl
+        tl.id === action.payload.todoListId ? { ...tl, filter: action.payload.filter } : tl
       );
       return newTodolists;
     }

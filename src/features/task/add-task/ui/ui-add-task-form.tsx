@@ -1,15 +1,15 @@
-import { UiAddItemForm, useAppDispatch } from '../../../../shared';
+import { UiAddItemForm, useAppDispatch } from '@/shared';
 
-import { addTaskAC } from '../../../../entities';
+import { createTaskTC } from '@/entities';
 
 type PropsType = {
-  todolistId: string;
+  todoListId: string;
 };
 
-export function UiAddTaskForm({ todolistId }: PropsType) {
+export function UiAddTaskForm({ todoListId }: PropsType) {
   const dispatch = useAppDispatch();
   const addTask = (title: string) => {
-    dispatch(addTaskAC({ title, todolistId }));
+    dispatch(createTaskTC({ title, todoListId }));
   };
   return <UiAddItemForm addItem={addTask} />;
 }

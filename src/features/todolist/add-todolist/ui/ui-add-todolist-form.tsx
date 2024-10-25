@@ -1,6 +1,6 @@
-import { UiAddItemForm, useAppDispatch } from '../../../../shared';
+import { UiAddItemForm, useAppDispatch } from '@/shared';
 
-import { addTodolistAC } from '../../../../entities';
+import { addTodolistAC } from '@/entities';
 
 export function UiAddTodolistForm() {
   const dispatch = useAppDispatch();

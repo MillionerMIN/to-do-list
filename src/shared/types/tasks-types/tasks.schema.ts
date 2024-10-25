@@ -21,11 +21,7 @@ export const TasksSchema = z.record(z.array(TaskSchema));
 export const GetTasksResponseSchema = z.object({
   error: z.optional(z.union([z.string(), z.null()])),
   totalCount: z.number(),
-  items: z.array(
-    z.object({
-      item: z.optional(TaskSchema),
-    })
-  ),
+  items: z.union([z.array(TaskSchema), z.tuple([])]),
 });
 
 export const CreateTaskResponseSchema = BaseTasksResponseSchema(
@@ -34,6 +30,4 @@ export const CreateTaskResponseSchema = BaseTasksResponseSchema(
   })
 );
 export const DeleteTaskResponseSchema = BaseTasksResponseSchema(z.object({}));
-export const UpdateTaskResponseSchema = BaseTasksResponseSchema(
-  z.object({ item: TaskSchema })
-);
+export const UpdateTaskResponseSchema = BaseTasksResponseSchema(z.object({ item: TaskSchema }));

@@ -1,4 +1,4 @@
-import { UiEditableTitleTodolist, UiFilterTasksButtons, UiRemoveTodolistBtn } from '@/features';
+import { UiEditableTitleTodolist, UiFilterTodolistButtons, UiRemoveTodolistBtn } from '@/features';
 
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -8,24 +8,24 @@ import { selectTodolistById } from '@/entities';
 import { useAppSelector } from '@/shared';
 
 type PropsType = {
-  todolistId: string;
+  todoListId: string;
 };
 
-export function UiTodolistCard({ todolistId }: PropsType) {
-  const todolist = useAppSelector(selectTodolistById(todolistId));
+export function UiTodolistCard({ todoListId }: PropsType) {
+  const todolist = useAppSelector(selectTodolistById(todoListId));
   return (
     <Card>
       <CardContent>
         <div className='flex justify-between'>
-          <UiEditableTitleTodolist todolistId={todolistId} todolistTitle={todolist.title} />
+          <UiEditableTitleTodolist todoListId={todoListId} todolistTitle={todolist.title} />
 
-          <UiRemoveTodolistBtn todolistId={todolistId} />
+          <UiRemoveTodolistBtn todoListId={todoListId} />
         </div>
 
-        <UiTasksList filter={todolist.filter} todolistId={todolistId} />
+        <UiTasksList filter={todolist.filter} todoListId={todoListId} />
       </CardContent>
       <CardActions>
-        <UiFilterTasksButtons todolistId={todolistId} />
+        <UiFilterTodolistButtons todoListId={todoListId} />
       </CardActions>
     </Card>
   );

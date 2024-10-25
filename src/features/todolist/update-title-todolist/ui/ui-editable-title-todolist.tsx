@@ -1,25 +1,19 @@
-import { UiEditableSpan, useAppDispatch } from '../../../../shared';
+import { UiEditableSpan, useAppDispatch } from '@/shared';
 
-import { changedTodolistTitleAC } from '../../../../entities';
+import { changedTodolistTitleAC } from '@/entities';
 
 type PropsType = {
-  todolistId: string;
+  todoListId: string;
   todolistTitle: string;
 };
-export function UiEditableTitleTodolist({
-  todolistId,
-  todolistTitle,
-}: PropsType) {
+export function UiEditableTitleTodolist({ todoListId, todolistTitle }: PropsType) {
   const dispatch = useAppDispatch();
   function updateTodolistTitleHandler(title: string) {
-    dispatch(changedTodolistTitleAC({ todolistId, title }));
+    dispatch(changedTodolistTitleAC({ todoListId, title }));
   }
   return (
     <h3 className='text-lg font-semibold'>
-      <UiEditableSpan
-        value={todolistTitle}
-        onChange={updateTodolistTitleHandler}
-      />
+      <UiEditableSpan value={todolistTitle} onChange={updateTodolistTitleHandler} />
     </h3>
   );
 }

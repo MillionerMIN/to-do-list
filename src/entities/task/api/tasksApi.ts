@@ -1,75 +1,37 @@
-import {
-  CreateTaskType,
-  DeleteTaskType,
-  GetTasksType,
-  TaskStatus,
-  TaskType,
-  UpdateTaskType,
-} from '../../../shared';
+import { CreateTaskType, DeleteTaskType, GetTasksType, TaskStatus, TaskType, UpdateTaskType } from '@/shared';
 
-import { instanceApi } from '../../../shared';
+import { UpdateTaskParamsType } from '../types';
+import { instanceApi } from '@/shared';
 
 export const tasksApi = {
   getTasks(id: string) {
     return instanceApi.get<GetTasksType>(`/todo-lists/${id}/tasks`);
   },
-  createTask(payload: { title: string; todolistId: string }) {
-    const { title, todolistId } = payload;
-    return instanceApi.post<CreateTaskType>(`/todo-lists/${todolistId}/tasks`, {
+  createTask(payload: { title: string; todoListId: string }) {
+    const { title, todoListId } = payload;
+    return instanceApi.post<CreateTaskType>(`/todo-lists/${todoListId}/tasks`, {
       title,
     });
   },
-  deleteTask(payload: { todolistId: string; taskId: string }) {
-    const { todolistId, taskId } = payload;
-    return instanceApi.delete<DeleteTaskType>(
-      `/todo-lists/${todolistId}/tasks/${taskId}`
-    );
+  deleteTask(payload: { todoListId: string; taskId: string }) {
+    const { todoListId, taskId } = payload;
+    return instanceApi.delete<DeleteTaskType>(`/todo-lists/${todoListId}/tasks/${taskId}`);
   },
   changeTitleTask(payload: { task: TaskType; title: string }) {
     const { title } = payload;
-    const {
-      todoListId,
-      id,
+    const { todoListId, id, description, status, priority, startDate, deadline } = payload.task;
+    return instanceApi.put<UpdateTaskType>(`/todo-lists/${todoListId}/tasks/${id}`, {
+      title,
       description,
       status,
       priority,
       startDate,
       deadline,
-    } = payload.task;
-    return instanceApi.put<UpdateTaskType>(
-      `/todo-lists/${todoListId}/tasks/${id}`,
-      {
-        title,
-        description,
-        status,
-        priority,
-        startDate,
-        deadline,
-      }
-    );
+    });
   },
-  changeStatusTask(payload: { task: TaskType; status: TaskStatus }) {
-    const { status } = payload;
-    const {
-      todoListId,
-      id,
-      description,
-      priority,
-      startDate,
-      deadline,
-      title,
-    } = payload.task;
+  updateStatusTask(payload: { taskId: string; todoListId: string; model: UpdateTaskParamsType }) {
+    const { taskId, todoListId } = payload;
 
-    return instanceApi.put<UpdateTaskType>(
-      `/todo-lists/${todoListId}/tasks/${id}`,
-      {
-        title,
-        description,
-        status,
-        priority,
-        startDate,
-        deadline,
-      }
-    );
+    return instanceApi.put<UpdateTaskType>(`/todo-lists/${todoListId}/tasks/${taskId}`, payload.model);
   },
 };

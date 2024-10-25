@@ -1,10 +1,4 @@
-import {
-  UiSwitchModeButton,
-  changeThemeModeAC,
-  selectThemeMode,
-  useAppDispatch,
-  useAppSelector,
-} from '../../shared';
+import { UiSwitchModeButton, changeThemeModeAC, selectThemeMode, useAppDispatch, useAppSelector } from '@/shared';
 
 export function SwitchThemeMode() {
   const themeMode = useAppSelector(selectThemeMode);
@@ -14,7 +8,5 @@ export function SwitchThemeMode() {
     dispatch(changeThemeModeAC(theme));
   };
 
-  return (
-    <UiSwitchModeButton themeMode={themeMode} onClick={changeModeHandler} />
-  );
+  return <UiSwitchModeButton themeMode={themeMode} onClick={changeModeHandler} />;
 }

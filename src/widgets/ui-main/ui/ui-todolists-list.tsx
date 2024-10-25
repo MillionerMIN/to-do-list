@@ -20,7 +20,7 @@ export function UiTodolistsList() {
         return (
           <Grid key={tl.id}>
             <Paper>
-              <UiTodolistCard key={tl.id} todolistId={tl.id} />
+              <UiTodolistCard key={tl.id} todoListId={tl.id} />
             </Paper>
           </Grid>
         );

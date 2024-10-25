@@ -1,13 +1,13 @@
-import { FilterTodolistType, TaskType } from '@/shared';
+import { FilterTodolistType, TaskStatus, TaskType } from '@/shared';
 
 import { RootState } from '@/app';
 
-export const selectTaskByTaskId = (todolistId: string, taskId: string) => (state: RootState) =>
-  state.tasks[todolistId].find((task) => task.id === taskId) as TaskType;
+export const selectTaskByTaskId = (todoListId: string, taskId: string) => (state: RootState) =>
+  state.tasks[todoListId].find((task) => task.id === taskId) as TaskType;
 
-export const selectFilterTasksByTodolistId = (todolistId: string, filter: FilterTodolistType) => (state: RootState) => {
-  if (filter === 'active') return state.tasks[todolistId].filter((task) => !task.status);
+export const selectFilterTasksBytodoListId = (todoListId: string, filter: FilterTodolistType) => (state: RootState) => {
+  if (filter === 'active') return state.tasks[todoListId].filter((task) => task.status === TaskStatus.New);
 
-  if (filter === 'completed') return state.tasks[todolistId].filter((task) => task.status);
-  return state.tasks[todolistId];
+  if (filter === 'completed') return state.tasks[todoListId].filter((task) => task.status === TaskStatus.Completed);
+  return state.tasks[todoListId];
 };

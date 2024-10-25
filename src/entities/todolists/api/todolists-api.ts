@@ -1,11 +1,7 @@
-import {
-  CreateTodolistType,
-  DeleteTodolistType,
-  UpdateTodolistType,
-} from '../../../shared';
+import { CreateTodolistType, DeleteTodolistType, UpdateTodolistType } from '@/shared';
 
-import { TodolistsType } from '../../../shared';
-import { instanceApi } from '../../../shared';
+import { TodolistsType } from '@/shared';
+import { instanceApi } from '@/shared';
 
 export const todolistsApi = {
   getTodolists() {

@@ -1,46 +1,44 @@
 import {
+  TaskStatus,
+  TaskType,
+  UiCheckbox,
   UiEditableSpan,
+  UiIconButton,
   useAppDispatch,
   useAppSelector,
-} from '../../../shared';
-import {
-  changeTaskStatusAC,
-  changeTaskTitleAC,
-  removeTaskAC,
-  selectTaskByTaskId,
-} from '../model';
+} from '@/shared';
+import { changeTaskTitleAC, removeTaskTC, selectTaskByTaskId } from '../model';
 
 import { ChangeEvent } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ListItem from '@mui/material/ListItem';
-import { UiCheckbox } from '../../../shared';
-import { UiIconButton } from '../../../shared/ui/ui-icon-button';
+import { changeTaskStatusTC } from '../model/tasks-reducer/thunks/change-task-status-TC';
 import clsx from 'clsx';
 
 type PropsType = {
-  todolistId: string;
+  todoListId: string;
   taskId: string;
 };
-export function UiTask({ todolistId, taskId }: PropsType) {
-  const task = useAppSelector(selectTaskByTaskId(todolistId, taskId));
+export function UiTask({ todoListId, taskId }: PropsType) {
+  const task = useAppSelector(selectTaskByTaskId(todoListId, taskId));
   const dispatch = useAppDispatch();
   function removeTaskHandler() {
-    dispatch(removeTaskAC({ taskId, todolistId }));
+    dispatch(removeTaskTC({ taskId, todoListId }));
   }
 
-  function changeTaskStatusHandler(event: ChangeEvent<HTMLInputElement>) {
-    const newStatusValue = event.currentTarget.checked;
+  function changeTaskStatusHandler(event: ChangeEvent<HTMLInputElement>, task: TaskType) {
+    const status = event.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New;
     dispatch(
-      changeTaskStatusAC({
+      changeTaskStatusTC({
+        todoListId,
         taskId,
-        isDone: newStatusValue,
-        todolistId,
+        status,
       })
     );
   }
 
   function changeTaskTitleHandler(title: string) {
-    dispatch(changeTaskTitleAC({ taskId, title, todolistId }));
+    dispatch(changeTaskTitleAC({ taskId, title, todoListId }));
   }
 
   return (
@@ -48,10 +46,10 @@ export function UiTask({ todolistId, taskId }: PropsType) {
       key={task.id}
       disablePadding
       disableGutters
-      className={clsx('justify-between', task.isDone && 'opacity-30')}
+      className={clsx('justify-between', !!task.status && 'opacity-30')}
     >
       <div className='flex gap-2'>
-        <UiCheckbox checked={task.isDone} onChange={changeTaskStatusHandler} />
+        <UiCheckbox checked={!!task.status} onChange={(e) => changeTaskStatusHandler(e, task)} />
         <UiEditableSpan value={task.title} onChange={changeTaskTitleHandler} />
       </div>
 

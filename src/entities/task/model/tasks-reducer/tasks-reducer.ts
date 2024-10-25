@@ -1,52 +1,49 @@
-import { TasksActionsType } from './actions';
+import { TasksActionsType } from './tasks-actions';
 import { TasksType } from '@/shared';
-import { v1 } from 'uuid';
 
 const initialState: TasksType = {};
 
 export const tasksReducer = (state: TasksType = initialState, action: TasksActionsType): TasksType => {
   switch (action.type) {
+    case 'SET-TASKS': {
+      const stateCopy = { ...state };
+      stateCopy[action.payload.todoListId] = action.payload.tasks;
+      return stateCopy;
+    }
     case 'REMOVE-TASK': {
       return {
         ...state,
-        [action.payload.todolistId]: state[action.payload.todolistId].filter(
+        [action.payload.todoListId]: state[action.payload.todoListId].filter(
           (task) => task.id !== action.payload.taskId
         ),
       };
     }
     case 'REMOVE-TODOLIST': {
-      delete state[action.payload.todolistId];
+      delete state[action.payload.todoListId];
       return state;
     }
     case 'ADD-TODOLIST': {
-      return { ...state, [action.payload.todolistId]: [] };
+      return { ...state, [action.payload.todoListId]: [] };
     }
     case 'ADD-TASK': {
-      const newTask = {
-        id: v1(),
-        title: action.payload.title,
-        isDone: false,
-      };
+      const newTask = action.payload.task;
       return {
         ...state,
-        [action.payload.todolistId]: [...state[action.payload.todolistId], newTask],
+        [newTask.todoListId]: [newTask, ...state[newTask.todoListId]],
       };
     }
     case 'CHANGE-TASK-STATUS': {
+      const { todoListId, id, status } = action.payload.task;
       return {
         ...state,
-        [action.payload.todolistId]: [
-          ...state[action.payload.todolistId].map((task) =>
-            task.id === action.payload.taskId ? { ...task, isDone: action.payload.isDone } : task
-          ),
-        ],
+        [todoListId]: [...state[todoListId].map((task) => (task.id === id ? { ...task, status } : task))],
       };
     }
     case 'CHANGE-TASK-TITLE': {
       return {
         ...state,
-        [action.payload.todolistId]: [
-          ...state[action.payload.todolistId].map((task) =>
+        [action.payload.todoListId]: [
+          ...state[action.payload.todoListId].map((task) =>
             task.id === action.payload.taskId ? { ...task, title: action.payload.title } : task
           ),
         ],

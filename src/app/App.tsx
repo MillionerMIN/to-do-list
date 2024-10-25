@@ -1,6 +1,6 @@
 import { WithRedux, WithTheme } from './providers';
 
-import { HomePage } from '../pages';
+import { HomePage } from '@/pages';
 
 function App() {
   console.log('$c Render');
