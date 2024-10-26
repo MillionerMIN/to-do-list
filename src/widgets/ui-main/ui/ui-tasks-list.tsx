@@ -1,5 +1,5 @@
 import { FilterTodolistType, useAppDispatch, useAppSelector } from '@/shared';
-import { UiTask, fetchTasksTC, selectFilterTasksBytodoListId } from '@/entities';
+import { UiTask, fetchTasksTC, selectFilterTasksByTodoListId } from '@/entities';
 
 import List from '@mui/material/List';
 import { UiAddTaskForm } from '@/features';
@@ -10,7 +10,7 @@ type PropsType = {
   filter: FilterTodolistType;
 };
 export function UiTasksList({ todoListId, filter }: PropsType) {
-  const tasks = useAppSelector(selectFilterTasksBytodoListId(todoListId, filter));
+  const tasks = useAppSelector(selectFilterTasksByTodoListId(todoListId, filter));
   const dispatch = useAppDispatch();
 
   useEffect(() => {

@@ -1,6 +1,6 @@
+import { TodolistType, TodolistWithFilterType } from '@/shared';
 import { addTodolistAC, changedTodolistFilterAC, changedTodolistTitleAC, removeTodolistAC } from '../actions-todolists';
 
-import { TodolistWithFilterType } from '@/entities';
 import { todolistsReducer } from '../todolists-reducer';
 import { v1 } from 'uuid';
 
@@ -16,9 +16,11 @@ beforeEach(() => {
     {
       id: todoListId1,
       title: 'What to learn',
+      addedDate: '',
+      order: 0,
       filter: 'all',
     },
-    { id: todoListId2, title: 'What to buy', filter: 'all' },
+    { id: todoListId2, title: 'What to buy', addedDate: '', order: 0, filter: 'all' },
   ];
 });
 
@@ -31,18 +33,18 @@ test('correct todolist should be removed', () => {
 });
 
 test('correct todolist should be added', () => {
-  const newTitle = 'New todolist';
+  const todolist: TodolistType = { id: v1(), title: 'New todolist', addedDate: '', order: 0 };
 
-  const endState = todolistsReducer(startState, addTodolistAC(newTitle));
+  const endState = todolistsReducer(startState, addTodolistAC(todolist));
 
   expect(endState.length).toBe(3);
-  expect(endState[2].title).toBe(newTitle);
+  expect(endState[2].title).toBe(todolist.title);
 });
 
 test('correct todolist should be changed title', () => {
   const newTitle = 'Change title';
 
-  const endState = todolistsReducer(startState, changedTodolistTitleAC({ todoListId: todoListId2, title: newTitle }));
+  const endState = todolistsReducer(startState, changedTodolistTitleAC({ id: todoListId2, title: newTitle }));
 
   expect(endState[0].title).toBe('What to learn');
   expect(endState[1].title).toBe(newTitle);
