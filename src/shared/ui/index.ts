@@ -10,3 +10,4 @@ import { lightTheme } from './light-theme';
 export { UiAddItemForm, UiLogo, darkTheme, lightTheme, UiCheckbox, UiEditableSpan, UiIconButton, UiButton };
 export * from './ui-switch-mode-button';
 export * from './ui-linear-progress';
+export * from './ui-snackbar';

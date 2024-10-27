@@ -1,1 +1,1 @@
-export type RequestState = 'loading' | 'success' | 'error' | 'idle';
+export type RequestState = 'loading' | 'success' | 'error' | 'idle' | 'failed';
