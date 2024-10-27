@@ -1,12 +1,15 @@
+import { UiLinearProgress, UiLogo, selectAppStatus } from '@/shared';
+
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import MuiAppBar from '@mui/material/AppBar';
 import { SwitchThemeMode } from '@/features';
 import Toolbar from '@mui/material/Toolbar';
-import { UiButton } from '../../shared/ui/ui-button';
-import { UiIconButton } from '../../shared/ui/ui-icon-button';
-import { UiLogo } from '@/shared';
+import { UiButton } from '@/shared';
+import { UiIconButton } from '@/shared';
+import { useAppSelector } from '@/shared';
 
 export function UiAppBar() {
+  const status = useAppSelector(selectAppStatus);
   return (
     <MuiAppBar position='static' className={'mb-8'}>
       <Toolbar className={'flex justify-between'}>
@@ -21,6 +24,7 @@ export function UiAppBar() {
           <SwitchThemeMode />
         </div>
       </Toolbar>
+      {status === 'loading' && <UiLinearProgress color='secondary' />}
     </MuiAppBar>
   );
 }
