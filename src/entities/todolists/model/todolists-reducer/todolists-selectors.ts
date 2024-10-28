@@ -6,3 +6,5 @@ export const selectTodolistById = (todoListId: string) => (state: RootState) =>
   state.todolists.find((tl) => tl.id === todoListId) as TodolistWithFilterType;
 export const selectFilterTodolistById = (todoListId: string) => (state: RootState) =>
   state.todolists.find((tl) => tl.id === todoListId) as TodolistWithFilterType;
+export const selectTodolistEntityStatus = (todoListId: string) => (state: RootState) =>
+  state.todolists.find((tl) => tl.id === todoListId)?.entityStatus;

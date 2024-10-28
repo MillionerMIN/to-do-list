@@ -5,11 +5,12 @@ import { UiField } from '../ui-field';
 import { UiIconButton } from '../ui-icon-button';
 import { useState } from 'react';
 
-type Props = {
+type PropsType = {
   addItem: (title: string) => void;
+  disabled?: boolean;
 };
 
-export function UiAddItemForm({ addItem }: Props) {
+export function UiAddItemForm({ addItem, disabled }: PropsType) {
   const [taskTitle, setTaskTitle] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
 
@@ -40,8 +41,9 @@ export function UiAddItemForm({ addItem }: Props) {
         onKeyUp={addItemOnKeyUpHandler}
         error={!!error}
         helperText={error}
+        disabled={disabled}
       />
-      <UiIconButton children={<AddBoxIcon />} onClick={addItemHandler} />
+      <UiIconButton children={<AddBoxIcon />} onClick={addItemHandler} disabled={disabled} />
     </div>
   );
 }
