@@ -1,11 +1,19 @@
-import { CreateTaskResponseSchema, ResultCode, TaskType, setAppErrorAC, setAppStatusAC } from '@/shared';
+import {
+  CreateTaskResponseSchema,
+  RequestStatus,
+  ResultCode,
+  TaskType,
+  handleServerAppError,
+  setAppStatusAC,
+} from '@/shared';
 
 import { Dispatch } from 'redux';
 import { addTaskAC } from '../tasks-actions';
+import { handleServerNetworkError } from '../../../../../shared/lib/handle-server-network-error';
 import { tasksApi } from '@/entities/task/api';
 
 export const createTaskTC = (arg: { title: string; todoListId: string }) => (dispatch: Dispatch) => {
-  dispatch(setAppStatusAC('loading'));
+  dispatch(setAppStatusAC(RequestStatus.Loading));
   tasksApi
     .createTask(arg)
     .then((res) => CreateTaskResponseSchema.parse(res.data))
@@ -13,14 +21,12 @@ export const createTaskTC = (arg: { title: string; todoListId: string }) => (dis
       if (res.resultCode === ResultCode.Success) {
         const task = res.data.item as TaskType;
         dispatch(addTaskAC({ task }));
-        dispatch(setAppStatusAC('success'));
+        dispatch(setAppStatusAC(RequestStatus.Success));
       } else {
-        if (res.messages.length) {
-          dispatch(setAppErrorAC(res.messages[0]));
-        } else {
-          dispatch(setAppErrorAC('Some error occurred'));
-        }
-        dispatch(setAppStatusAC('failed'));
+        handleServerAppError(res, dispatch);
       }
+    })
+    .catch((error) => {
+      handleServerNetworkError(error, dispatch);
     });
 };

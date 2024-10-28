@@ -1,7 +1,8 @@
 import { BaseTodolistResponseSchema } from './base-todolist-response.schema';
 import { FilterTodolistSchema } from './filter-todolist.schema';
-import { RequestStatusSchema } from '../request-state.type';
+import { RequestStatusSchema } from '../request-state.schema';
 import { z } from 'zod';
+
 export const TodolistSchema = z.object({
   id: z.string(),
   title: z.string(),

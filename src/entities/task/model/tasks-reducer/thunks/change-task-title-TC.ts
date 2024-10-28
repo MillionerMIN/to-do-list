@@ -1,6 +1,7 @@
+import { RequestStatus, UpdateTaskResponseSchema, handleServerNetworkError, setAppStatusAC } from '@/shared';
+
 import { Dispatch } from 'redux';
 import { RootState } from '@/app';
-import { UpdateTaskResponseSchema } from '@/shared';
 import { UpdateTaskTitleType } from '@/entities/task/types';
 import { changeTaskTitleAC } from '../tasks-actions';
 import { tasksApi } from '@/entities/task/api';
@@ -17,9 +18,16 @@ export const changeTaskTitleTC =
       const model: UpdateTaskTitleType = {
         title,
       };
+      dispatch(setAppStatusAC(RequestStatus.Loading));
       tasksApi
         .changeTitleTask({ taskId, todoListId, model })
         .then((res) => UpdateTaskResponseSchema.parse(res.data))
-        .then((res) => dispatch(changeTaskTitleAC({ task: res.data.item })));
+        .then((res) => {
+          dispatch(changeTaskTitleAC({ task: res.data.item }));
+          dispatch(setAppStatusAC(RequestStatus.Success));
+        })
+        .catch((error) => {
+          handleServerNetworkError(error, dispatch);
+        });
     }
   };

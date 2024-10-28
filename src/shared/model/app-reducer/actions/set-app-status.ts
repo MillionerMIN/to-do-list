@@ -1,6 +1,5 @@
-import { RequestState } from '@/shared/types';
-
-export const setAppStatusAC = (status: RequestState) => {
+import { RequestStateType } from '@/shared';
+export const setAppStatusAC = (status: RequestStateType) => {
   return { type: 'SET-STATUS', payload: { status } } as const;
 };
 

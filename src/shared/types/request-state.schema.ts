@@ -7,5 +7,3 @@ export const RequestStatusSchema = z.union([
   z.literal('idle'),
   z.literal('failed'),
 ]);
-
-export type RequestState = z.infer<typeof RequestStatusSchema>;

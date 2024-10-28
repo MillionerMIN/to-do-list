@@ -21,7 +21,7 @@ export const todolistsReducer = (
         filter: 'all',
         entityStatus: 'idle',
       };
-      return [...state, newTodolist];
+      return [newTodolist, ...state];
     }
     case 'CHANGE-TODOLIST-TITLE': {
       const { id, title } = action.payload;

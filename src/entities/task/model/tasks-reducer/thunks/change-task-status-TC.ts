@@ -1,4 +1,10 @@
-import { TaskStatusEnum, UpdateTaskResponseSchema } from '@/shared';
+import {
+  RequestStatus,
+  TaskStatusEnum,
+  UpdateTaskResponseSchema,
+  handleServerNetworkError,
+  setAppStatusAC,
+} from '@/shared';
 
 import { Dispatch } from 'redux';
 import { RootState } from '@/app';
@@ -24,9 +30,16 @@ export const changeTaskStatusTC =
         startDate: task.startDate,
         deadline: task.deadline,
       };
+      dispatch(setAppStatusAC(RequestStatus.Loading));
       tasksApi
         .updateStatusTask({ taskId, todoListId, model })
         .then((res) => UpdateTaskResponseSchema.parse(res.data))
-        .then((res) => dispatch(changeTaskStatusAC({ task: res.data.item })));
+        .then((res) => {
+          dispatch(changeTaskStatusAC({ task: res.data.item }));
+          dispatch(setAppStatusAC(RequestStatus.Success));
+        })
+        .catch((error) => {
+          handleServerNetworkError(error, dispatch);
+        });
     }
   };
