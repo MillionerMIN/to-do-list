@@ -1,12 +1,13 @@
-import { UiIconButton, useAppDispatch } from '@/shared';
+import { UiIconButton, useAppDispatch, useAppSelector } from '@/shared';
+import { removeTodolistTC, selectTodolistById } from '@/entities';
 
 import DeleteIcon from '@mui/icons-material/Delete';
-import { removeTodolistTC } from '@/entities';
 
 type PropsType = {
   todoListId: string;
 };
 export function UiRemoveTodolistBtn({ todoListId }: PropsType) {
+  const { entityStatus } = useAppSelector(selectTodolistById(todoListId));
   const dispatch = useAppDispatch();
   const removeTodolistHandler = () => {
     dispatch(removeTodolistTC({ id: todoListId }));
@@ -16,6 +17,7 @@ export function UiRemoveTodolistBtn({ todoListId }: PropsType) {
       className=' hover:text-pink'
       children={<DeleteIcon fontSize='small' className='text-bg-dark/50 hover:text-pink' />}
       onClick={removeTodolistHandler}
+      disabled={entityStatus === 'loading'}
     />
   );
 }

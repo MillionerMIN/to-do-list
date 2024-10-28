@@ -1,4 +1,4 @@
-import { FilterTodolistType, TodolistType } from '@/shared';
+import { FilterTodolistType, RequestState, TodolistType } from '@/shared';
 
 export const setTodolistsAC = (todolists: TodolistType[]) => {
   return { type: 'SET-TODOLISTS', todolists } as const;
@@ -14,29 +14,36 @@ export const addTodolistAC = (todolist: TodolistType) => {
   } as const;
 };
 
-export const changedTodolistTitleAC = (payload: { id: string; title: string }) => {
+export const changeTodolistTitleAC = (payload: { id: string; title: string }) => {
   return {
     type: 'CHANGE-TODOLIST-TITLE',
     payload,
   } as const;
 };
 
-export const changedTodolistFilterAC = (payload: { todoListId: string; filter: FilterTodolistType }) => {
+export const changeTodolistFilterAC = (payload: { todoListId: string; filter: FilterTodolistType }) => {
   return {
     type: 'CHANGE-TODOLIST-FILTER',
     payload,
   } as const;
 };
 
-export type SetTodolistsActionType = ReturnType<typeof setTodolistsAC>;
-export type RemoveTodolistActionType = ReturnType<typeof removeTodolistAC>;
-export type AddTodolistActionType = ReturnType<typeof addTodolistAC>;
+export const changeTodolistEntityStatusAC = (payload: { todoListId: string; entityStatus: RequestState }) => {
+  return {
+    type: 'CHANGE-TODOLIST-ENTITY-STATUS',
+    payload,
+  } as const;
+};
 
-type ChangeTodolistTitleActionType = ReturnType<typeof changedTodolistTitleAC>;
-
-export type ChangeTodolistFilterActionType = ReturnType<typeof changedTodolistFilterAC>;
+type SetTodolistsActionType = ReturnType<typeof setTodolistsAC>;
+type RemoveTodolistActionType = ReturnType<typeof removeTodolistAC>;
+type AddTodolistActionType = ReturnType<typeof addTodolistAC>;
+type ChangeTodolistTitleActionType = ReturnType<typeof changeTodolistTitleAC>;
+type ChangeTodolistFilterActionType = ReturnType<typeof changeTodolistFilterAC>;
+type ChangeTodolistEntityStatusType = ReturnType<typeof changeTodolistEntityStatusAC>;
 
 export type TodolistsActionsType =
+  | ChangeTodolistEntityStatusType
   | SetTodolistsActionType
   | RemoveTodolistActionType
   | AddTodolistActionType

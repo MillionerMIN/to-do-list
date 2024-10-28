@@ -9,7 +9,7 @@ export const todolistsReducer = (
 ): TodolistWithFilterType[] => {
   switch (action.type) {
     case 'SET-TODOLISTS': {
-      return action.todolists.map((tl) => ({ ...tl, filter: 'all' }));
+      return action.todolists.map((tl) => ({ ...tl, filter: 'all', entityStatus: 'idle' }));
     }
     case 'REMOVE-TODOLIST': {
       return state.filter((tl) => tl.id !== action.payload.todoListId);
@@ -19,6 +19,7 @@ export const todolistsReducer = (
       const newTodolist: TodolistWithFilterType = {
         ...props,
         filter: 'all',
+        entityStatus: 'idle',
       };
       return [...state, newTodolist];
     }
@@ -32,6 +33,10 @@ export const todolistsReducer = (
         tl.id === action.payload.todoListId ? { ...tl, filter: action.payload.filter } : tl
       );
       return newTodolists;
+    }
+    case 'CHANGE-TODOLIST-ENTITY-STATUS': {
+      const { todoListId, entityStatus } = action.payload;
+      return state.map((tl) => (tl.id === todoListId ? { ...tl, entityStatus } : tl));
     }
 
     default:

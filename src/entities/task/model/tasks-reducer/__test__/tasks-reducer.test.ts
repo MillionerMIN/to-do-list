@@ -180,7 +180,7 @@ test('correct task should be added to correct array', () => {
   expect(endState['todoListId2'][0].status).toBe(TaskStatus.New);
 });
 
-test('status of specified task should be changed', () => {
+test('status of specified task should be change', () => {
   const task = {
     id: '2',
     todoListId: 'todoListId2',
@@ -199,7 +199,7 @@ test('status of specified task should be changed', () => {
   expect(endState['todoListId1'][1].status).toBe(TaskStatus.Completed);
 });
 
-test('title of specified task should be changed', () => {
+test('title of specified task should be change', () => {
   const task = {
     id: '2',
     todoListId: 'todoListId2',

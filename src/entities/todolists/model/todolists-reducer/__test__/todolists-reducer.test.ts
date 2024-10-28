@@ -1,5 +1,11 @@
 import { TodolistType, TodolistWithFilterType } from '@/shared';
-import { addTodolistAC, changedTodolistFilterAC, changedTodolistTitleAC, removeTodolistAC } from '../actions-todolists';
+import {
+  addTodolistAC,
+  changeTodolistEntityStatusAC,
+  changeTodolistFilterAC,
+  changeTodolistTitleAC,
+  removeTodolistAC,
+} from '../actions-todolists';
 
 import { todolistsReducer } from '../todolists-reducer';
 import { v1 } from 'uuid';
@@ -19,8 +25,9 @@ beforeEach(() => {
       addedDate: '',
       order: 0,
       filter: 'all',
+      entityStatus: 'idle',
     },
-    { id: todoListId2, title: 'What to buy', addedDate: '', order: 0, filter: 'all' },
+    { id: todoListId2, title: 'What to buy', addedDate: '', order: 0, filter: 'all', entityStatus: 'idle' },
   ];
 });
 
@@ -41,23 +48,32 @@ test('correct todolist should be added', () => {
   expect(endState[2].title).toBe(todolist.title);
 });
 
-test('correct todolist should be changed title', () => {
+test('correct todolist should be change title', () => {
   const newTitle = 'Change title';
 
-  const endState = todolistsReducer(startState, changedTodolistTitleAC({ id: todoListId2, title: newTitle }));
+  const endState = todolistsReducer(startState, changeTodolistTitleAC({ id: todoListId2, title: newTitle }));
 
   expect(endState[0].title).toBe('What to learn');
   expect(endState[1].title).toBe(newTitle);
 });
 
-test('correct filter of todolist should be changed', () => {
+test('correct filter of todolist should be change', () => {
   const newFilter = 'completed';
 
-  const endState = todolistsReducer(
-    startState,
-    changedTodolistFilterAC({ todoListId: todoListId2, filter: newFilter })
-  );
+  const endState = todolistsReducer(startState, changeTodolistFilterAC({ todoListId: todoListId2, filter: newFilter }));
 
   expect(endState[0].filter).toBe('all');
   expect(endState[1].filter).toBe(newFilter);
+});
+
+test('correct entityStatus of todolist should be change', () => {
+  const newStatus = 'loading';
+
+  const endState = todolistsReducer(
+    startState,
+    changeTodolistEntityStatusAC({ todoListId: todoListId2, entityStatus: newStatus })
+  );
+
+  expect(endState[0].entityStatus).toBe('idle');
+  expect(endState[1].entityStatus).toBe(newStatus);
 });

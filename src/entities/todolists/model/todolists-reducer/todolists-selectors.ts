@@ -1,5 +1,5 @@
-import { RootState } from '../../../../app';
-import { TodolistWithFilterType } from '../../types';
+import { RootState } from '@/app';
+import { TodolistWithFilterType } from '@/shared';
 
 export const selectTodolists = (state: RootState) => state.todolists;
 export const selectTodolistById = (todoListId: string) => (state: RootState) =>
