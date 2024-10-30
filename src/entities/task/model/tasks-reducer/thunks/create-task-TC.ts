@@ -23,7 +23,8 @@ export const createTaskTC = (arg: { title: string; todoListId: string }) => (dis
         dispatch(addTaskAC({ task }));
         dispatch(setAppStatusAC(RequestStatus.Success));
       } else {
-        handleServerAppError(res, dispatch);
+        console.log(res);
+        handleServerAppError(res.messages, dispatch);
       }
     })
     .catch((error) => {

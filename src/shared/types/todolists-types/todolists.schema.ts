@@ -1,6 +1,6 @@
 import { BaseTodolistResponseSchema } from './base-todolist-response.schema';
 import { FilterTodolistSchema } from './filter-todolist.schema';
-import { RequestStatusSchema } from '../request-state.schema';
+import { RequestStatusSchema } from '../request-state-type';
 import { z } from 'zod';
 
 export const TodolistSchema = z.object({
@@ -20,5 +20,5 @@ export const TodolistWithFilterSchema = z
   })
   .extend({ filter: FilterTodolistSchema, entityStatus: RequestStatusSchema });
 export const UpdateTodolistResponseSchema = BaseTodolistResponseSchema(z.object({}));
-export const CreateTodolistResponseSchema = BaseTodolistResponseSchema(z.object({ item: TodolistSchema }));
+export const CreateTodolistResponseSchema = BaseTodolistResponseSchema(z.object({ item: z.optional(TodolistSchema) }));
 export const DeleteTodolistResponseSchema = BaseTodolistResponseSchema(z.object({}));

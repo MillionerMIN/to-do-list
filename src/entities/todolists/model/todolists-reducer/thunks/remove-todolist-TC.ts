@@ -16,5 +16,6 @@ export const removeTodolistTC = (arg: { id: string }) => (dispatch: Dispatch) =>
     })
     .catch((error) => {
       handleServerNetworkError(error, dispatch);
+      dispatch(changeTodolistEntityStatusAC({ todoListId: arg.id, entityStatus: RequestStatus.Error }));
     });
 };

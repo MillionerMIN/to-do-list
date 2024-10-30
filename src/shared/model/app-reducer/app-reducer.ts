@@ -1,11 +1,13 @@
 import { ChangeThemeModeActionType, SetAppErrorActionType, SetAppStatusActionType } from './actions';
-import { RequestState, ThemeModeType } from '../../types';
+
+import { RequestStatusType } from '@/shared/enums';
+import { ThemeModeType } from '../../types';
 
 type InitialStateType = typeof initialState;
 
 const initialState = {
   themeMode: 'light' as ThemeModeType,
-  status: 'idle' as RequestState,
+  status: 'idle' as RequestStatusType,
   error: null as string | null,
 };
 

@@ -1,4 +1,4 @@
-import { FilterTodolistType, RequestState, TodolistType } from '@/shared';
+import { FilterTodolistType, RequestStatusType, TodolistType } from '@/shared';
 
 export const setTodolistsAC = (todolists: TodolistType[]) => {
   return { type: 'SET-TODOLISTS', todolists } as const;
@@ -28,7 +28,7 @@ export const changeTodolistFilterAC = (payload: { todoListId: string; filter: Fi
   } as const;
 };
 
-export const changeTodolistEntityStatusAC = (payload: { todoListId: string; entityStatus: RequestState }) => {
+export const changeTodolistEntityStatusAC = (payload: { todoListId: string; entityStatus: RequestStatusType }) => {
   return {
     type: 'CHANGE-TODOLIST-ENTITY-STATUS',
     payload,

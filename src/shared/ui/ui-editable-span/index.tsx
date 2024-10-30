@@ -6,14 +6,16 @@ import clsx from 'clsx';
 type Props = {
   className?: string;
   value: string;
+  disabled?: boolean;
   onChange: (newTitle: string) => void;
 };
-export const UiEditableSpan = ({ className, value, onChange }: Props) => {
+export const UiEditableSpan = ({ className, value, disabled, onChange }: Props) => {
   const [editMode, setEditMode] = useState(false);
   const [title, setTitle] = useState(value);
-
+  console.log(disabled);
   const activateEditModeHandler = () => {
-    setEditMode(true);
+    if (disabled) setEditMode(false);
+    else setEditMode(true);
   };
 
   const deactivateEditModeHandler = () => {
@@ -33,12 +35,10 @@ export const UiEditableSpan = ({ className, value, onChange }: Props) => {
           onChange={changeTitleHandler}
           autoFocus
           onBlur={deactivateEditModeHandler}
+          disabled={disabled}
         />
       ) : (
-        <span
-          className={clsx('', className)}
-          onDoubleClick={activateEditModeHandler}
-        >
+        <span className={clsx('', className)} onDoubleClick={activateEditModeHandler}>
           {value}
         </span>
       )}

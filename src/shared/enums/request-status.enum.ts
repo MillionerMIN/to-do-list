@@ -1,5 +1,3 @@
-import { z } from 'zod';
-
 export enum RequestStatus {
   Idle = 'idle',
   Loading = 'loading',
@@ -7,6 +5,3 @@ export enum RequestStatus {
   Failed = 'failed',
   Error = 'error',
 }
-
-export const RequestStatusEnum = z.nativeEnum(RequestStatus);
-export type RequestStatusType = z.infer<typeof RequestStatusEnum>;

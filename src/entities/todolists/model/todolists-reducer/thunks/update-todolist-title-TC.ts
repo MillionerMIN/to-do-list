@@ -9,7 +9,10 @@ export const updateTodolistTitleTC = (arg: { title: string; id: string }) => (di
   todolistsApi
     .updateTodolistTitle(arg)
     .then((res) => UpdateTodolistResponseSchema.parse(res.data))
-    .then(() => dispatch(changeTodolistTitleAC(arg)))
+    .then(() => {
+      dispatch(changeTodolistTitleAC(arg));
+      dispatch(setAppStatusAC(RequestStatus.Success));
+    })
     .catch((error) => {
       handleServerNetworkError(error, dispatch);
     });
