@@ -1,13 +1,5 @@
-import { UiAppBar, UiMain } from '@/widgets';
-
-import { UiSnackbar } from '@/shared';
+import { UiMain } from '@/widgets';
 
 export function HomePage() {
-  return (
-    <>
-      <UiAppBar />
-      <UiMain />
-      <UiSnackbar />
-    </>
-  );
+  return <UiMain />;
 }

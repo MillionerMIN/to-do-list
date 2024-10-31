@@ -1,13 +1,14 @@
 import { WithRedux, WithTheme } from './providers';
 
-import { HomePage } from '@/pages';
+import { RouterProvider } from 'react-router-dom';
+import { router } from './router';
 
 function App() {
   console.log('$c Render');
 
   return (
     <WithTheme>
-      <HomePage />
+      <RouterProvider router={router} />
     </WithTheme>
   );
 }
