@@ -36,8 +36,8 @@ export const changeTodolistEntityStatusAC = (payload: { todoListId: string; enti
 };
 
 type SetTodolistsActionType = ReturnType<typeof setTodolistsAC>;
-type RemoveTodolistActionType = ReturnType<typeof removeTodolistAC>;
-type AddTodolistActionType = ReturnType<typeof addTodolistAC>;
+export type RemoveTodolistActionType = ReturnType<typeof removeTodolistAC>;
+export type AddTodolistActionType = ReturnType<typeof addTodolistAC>;
 type ChangeTodolistTitleActionType = ReturnType<typeof changeTodolistTitleAC>;
 type ChangeTodolistFilterActionType = ReturnType<typeof changeTodolistFilterAC>;
 type ChangeTodolistEntityStatusType = ReturnType<typeof changeTodolistEntityStatusAC>;

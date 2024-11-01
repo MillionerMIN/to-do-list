@@ -11,3 +11,4 @@ export { UiAddItemForm, UiLogo, darkTheme, lightTheme, UiCheckbox, UiEditableSpa
 export * from './ui-switch-mode-button';
 export * from './ui-linear-progress';
 export * from './ui-snackbar';
+export * from './ui-circular-progress';

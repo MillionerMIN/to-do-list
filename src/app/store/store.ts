@@ -1,11 +1,12 @@
 import { ThunkDispatch, thunk } from 'redux-thunk';
 import { UnknownAction, applyMiddleware, combineReducers, legacy_createStore } from 'redux';
-import { tasksReducer, todolistsReducer } from '@/entities';
+import { authReducer, tasksReducer, todolistsReducer } from '@/entities';
 
 import { appReducer } from '@/shared';
 
 const rootReducer = combineReducers({
   app: appReducer,
+  auth: authReducer,
   todolists: todolistsReducer,
   tasks: tasksReducer,
 });

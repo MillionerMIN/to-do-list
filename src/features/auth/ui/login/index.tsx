@@ -1,5 +1,6 @@
-import { AuthForm, AuthSchema, useGetTheme } from '@/shared';
+import { AuthForm, AuthSchema, useAppDispatch, useAppSelector, useGetTheme } from '@/shared';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { loginTC, selectIsLoggedIn } from '@/entities';
 
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
@@ -8,12 +9,16 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import FormLabel from '@mui/material/FormLabel';
 import Grid from '@mui/material/Grid';
+import { Navigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 export function Login() {
   const theme = useGetTheme();
+  const dispatch = useAppDispatch();
+  const isLoggedIn = useAppSelector(selectIsLoggedIn);
 
+  console.log('#####IsLoggedIn', isLoggedIn);
   const {
     register,
     handleSubmit,
@@ -26,9 +31,13 @@ export function Login() {
   });
 
   const onSubmit: SubmitHandler<AuthForm> = (data) => {
-    console.log(data);
+    dispatch(loginTC(data));
     reset();
   };
+
+  if (isLoggedIn) {
+    return <Navigate to={'/'} />;
+  }
 
   return (
     <Grid container justifyContent={'center'}>

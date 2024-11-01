@@ -1,7 +1,4 @@
-import type {
-  AddTodolistActionType,
-  RemoveTodolistActionType,
-} from '../../../todolists/model/todolists-reducer/actions-todolists';
+import { AddTodolistActionType, RemoveTodolistActionType } from '@/entities/todolists';
 
 import { TaskType } from '@/shared';
 
