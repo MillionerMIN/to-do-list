@@ -1,3 +1,6 @@
+import { AuthForm, AuthSchema, useGetTheme } from '@/shared';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
@@ -6,10 +9,26 @@ import FormGroup from '@mui/material/FormGroup';
 import FormLabel from '@mui/material/FormLabel';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
-import { useGetTheme } from '@/shared';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 export function Login() {
   const theme = useGetTheme();
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    formState: { errors },
+  } = useForm<AuthForm>({
+    resolver: zodResolver(AuthSchema),
+    defaultValues: { rememberMe: false, email: '', password: '' },
+  });
+
+  const onSubmit: SubmitHandler<AuthForm> = (data) => {
+    console.log(data);
+    reset();
+  };
 
   return (
     <Grid container justifyContent={'center'}>
@@ -35,14 +54,39 @@ export function Login() {
               <b>Password:</b> free
             </p>
           </FormLabel>
-          <FormGroup>
-            <TextField label='Email' margin='normal' />
-            <TextField type='password' label='Password' margin='normal' />
-            <FormControlLabel label={'Remember me'} control={<Checkbox />} />
-            <Button type={'submit'} variant={'contained'} color={'primary'}>
-              Login
-            </Button>
-          </FormGroup>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <FormGroup>
+              <TextField
+                label='Email'
+                margin='normal'
+                {...register('email')}
+                error={!!errors.email}
+                helperText={errors.email?.message}
+              />
+              <TextField
+                type='password'
+                label='Password'
+                margin='normal'
+                {...register('password')}
+                error={!!errors.password}
+                helperText={errors.password?.message}
+              />
+              <FormControlLabel
+                label={'Remember me'}
+                control={
+                  <Controller
+                    name={'rememberMe'}
+                    control={control}
+                    render={({ field: { value, ...field } }) => <Checkbox {...field} checked={value} />}
+                  />
+                }
+              />
+
+              <Button type={'submit'} variant={'contained'} color={'primary'}>
+                Login
+              </Button>
+            </FormGroup>
+          </form>
         </FormControl>
       </Grid>
     </Grid>
