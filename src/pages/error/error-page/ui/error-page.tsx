@@ -1,3 +1,6 @@
+import { Navigate } from 'react-router-dom';
+import { UiButton } from '@/shared';
+
 const s = {
   container: 'flex items-center justify-center min-h-screen',
   wrapper: 'flex flex-col items-center',
@@ -5,6 +8,10 @@ const s = {
 };
 
 export const ErrorPage = () => {
+  const handleStartPage = () => {
+    return <Navigate to={'/'} />;
+  };
+
   return (
     <div className={s.container}>
       <div className={s.wrapper}>
@@ -13,6 +20,7 @@ export const ErrorPage = () => {
         <p className='text-2xl'>
           The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.
         </p>
+        {/* <UiButton onClick={handleStartPage}>Back</UiButton> */}
       </div>
     </div>
   );

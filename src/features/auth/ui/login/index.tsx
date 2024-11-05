@@ -1,4 +1,4 @@
-import { AuthForm, AuthSchema, useAppDispatch, useAppSelector, useGetTheme } from '@/shared';
+import { AuthForm, AuthSchema, Path, useAppDispatch, useAppSelector, useGetTheme } from '@/shared';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { loginTC, selectIsLoggedIn } from '@/entities';
 

@@ -1,5 +1,5 @@
 import { UiCircularProgress, UiSnackbar, useAppDispatch, useAppSelector } from '@/shared';
-import { initializeAppTC, selectIsInitialized } from '@/entities';
+import { initializeAppTC, selectIsInitialized, selectIsLoggedIn } from '@/entities';
 
 import { Outlet } from 'react-router-dom';
 import { UiAppBar } from '@/widgets';
@@ -12,7 +12,6 @@ export function BaseView() {
   useEffect(() => {
     dispatch(initializeAppTC());
   }, []);
-
   return (
     <>
       {isInitialized && (
